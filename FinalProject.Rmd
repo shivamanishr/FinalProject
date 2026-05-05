@@ -443,12 +443,12 @@ The dataset was split into 80% training (200,001 rows) and 20% test (49,999 rows
 
 ### Model 1: Linear Regression
 
-We began with a linear regression model as our baseline. Linear
-regression fits a straight-line relationship between each predictor and
-the target variable. Before fitting the model, we one-hot encoded the
-factor variables into binary columns using `dummyVars`.
+We began with a linear regression model as our baseline. Linear regression fits a straight-line relationship between each predictor and the target variable. Before fitting the model, we one-hot encoded the factor variables into binary columns using `dummyVars`.
 
 ``` {r}
+# One-hot encode factor variables, fit linear regression model, 
+# and evaluate using RMSE and MAE on test set
+
 dummy_model   <- dummyVars(salary ~ ., data = train_data, fullRank = TRUE)
 train_encoded <- predict(dummy_model, newdata = train_data) %>% as.data.frame()
 test_encoded  <- predict(dummy_model, newdata = test_data)  %>% as.data.frame()
@@ -463,50 +463,7 @@ cat("RMSE:", round(rmse(test_data$salary, lm_preds), 0), "\n")
 cat("MAE: ", round(mae(test_data$salary,  lm_preds), 0), "\n")
 ```
 
-
-The linear regression model produces a root mean squared error (RMSE) of approximately $32,441 and a mean absolute error (MAE) of $25,987. This means that on average, the model's salary predictions are off by
-roughly $26,000. While this establishes a usable baseline, the
-assumption of linear relationships between each predictor and salary
-is a limitation, as interactions and non-linear effects are ignored.
-
-### Model 2: Random Forest
-
-Random Forest builds many decision trees, each trained on a random
-subset of the data and a random subset of features, then averages
-their predictions. This approach captures non-linear relationships
-and interactions between variables that linear regression cannot model.
-
-``` {r}
-set.seed(42)
-rf_model <- randomForest(
-  salary ~ .,
-  data       = train_data,
-  ntree      = 500,
-  mtry       = 3,
-  importance = TRUE
-)
-
-rf_preds <- predict(rf_model, newdata = test_data)
-
-cat("RMSE:", round(rmse(test_data$salary, rf_preds), 0), "\n")
-cat("MAE: ", round(mae(test_data$salary,  rf_preds), 0), "\n")
-```
-
-Random Forest improves over linear regression on both metrics, with
-an RMSE of $28,103 and an MAE of $22,419. We then examined which
-variables contributed most to the model's predictions using the
-built-in feature importance measure.
-
-``` {r}
-varImpPlot(rf_model, main = "Random Forest: Variable Importance")
-```
-
-The feature importance plot shows that `experience_years` is by far the
-most important predictor, followed by `location` and `job_title`.
-`company_size` and `education_level` contribute moderately, while
-`skills_count`, `certifications`, `remote_work`, and `industry` have
-relatively low importance scores. This ranking aligns closely with the
-patterns observed in the exploratory analysis.
+The linear regression model produces an RMSE of $7,149 and an MAE of $5,450. This means on average the model's salary predictions are off by roughly $5,450. While this establishes a usable baseline, linear regression assumes straight-line relationships between predictors and salary, ignoring interactions and non-linear effects
 
 ### Model 3: XGBoost
 
@@ -514,8 +471,14 @@ XGBoost (Extreme Gradient Boosting) builds trees sequentially, with
 each new tree correcting the errors of the previous ones. It is often
 the most accurate algorithm for tabular data. XGBoost requires all
 inputs to be numeric, so we encoded factors as integers before fitting.
+```{r}
+library(tidyverse)
+library(xgboost)
+library(Metrics)
+```
 
 ``` {r}
+# Encode factors as integers, build XGBoost model, and evaluate on test set
 encode_for_xgb <- function(data) {
   data %>%
     mutate(across(where(is.factor), as.integer)) %>%
@@ -542,16 +505,11 @@ xgb_model <- xgb.train(
   params        = xgb_params,
   data          = dtrain,
   nrounds       = 300,
-  watchlist     = list(train = dtrain, test = dtest),
+  evals     = list(train = dtrain, test = dtest),
   verbose       = 1,
   print_every_n = 100
 )
 ```
-
-    ## [1]    train-rmse:130967.32  test-rmse:131008.12
-    ## [100]  train-rmse:24891.44   test-rmse:25903.11
-    ## [200]  train-rmse:22013.18   test-rmse:24512.07
-    ## [300]  train-rmse:20184.65   test-rmse:24188.22
 
 ``` {r}
 xgb_preds <- predict(xgb_model, dtest)
@@ -560,23 +518,17 @@ cat("RMSE:", round(rmse(test_data$salary, xgb_preds), 0), "\n")
 cat("MAE: ", round(mae(test_data$salary,  xgb_preds), 0), "\n")
 ```
 
-XGBoost achieves the best performance of the three models, with an
-RMSE of $24,188 and an MAE of $18,954. We then inspected which
-features the model relied on most heavily.
+XGBoost achieves the best performance of the two models, with an RMSE of $5,201 and an MAE of $4,146. The training log shows RMSE dropping from $35,249 at round 1 to $5,061 at round 300, confirming the model improves steadily with each boosting round. We then inspected which features the model relied on most heavily.
 
 ``` {r}
+# Plot top 10 most important features from XGBoost model
 xgb_importance <- xgb.importance(model = xgb_model)
 xgb.plot.importance(xgb_importance, top_n = 10,
                     main = "XGBoost: Feature Importance (Gain)")
 ```
 
 
-The XGBoost feature importance plot confirms that `experience_years`
-is the single most important predictor by a wide margin, consistent with
-the Random Forest findings. `location` and `job_title` are again the
-second and third most important features. Notably, `industry` appears
-near the bottom of the importance ranking, matching the near-zero salary
-differences we observed across industries during the exploratory phase.
+Location is the most important predictor by a wide margin, followed by experience_years and company_size. Industry and remote_work contribute the least, consistent with our earlier findings.
 
 ### Model Comparison
 
