@@ -252,6 +252,8 @@ df %>%
 The bar chart shows a clear positive relationship between educational attainment and salary. High School graduates earn an average of $131,715, while PhD holders earn $163,976 — a premium of $32,261. The incremental gains between each level are: High School to Diploma $5,444; Diploma to Bachelor $5,252; Bachelor to Master $10,894; and Master to PhD $10,671. The larger jumps at the graduate level suggest advanced degrees carry a more meaningful salary premium. However, the full education premium of $32,261 is smaller than the $54,307 gained through 20 years of experience, suggesting experience is a stronger salary driver than education in this dataset.
 
 ``` {r}
+# Plot the full salary distribution for each education level using boxplots
+
 df %>%
   ggplot(aes(x = education_level, y = salary)) +
   geom_boxplot(fill = "#e8f5ee", color = "#276749") +
@@ -260,20 +262,15 @@ df %>%
   ggtitle("Salary Distribution by Education Level")
 ```
 
-![](figures/salary_dist_education.png)<!-- -->
-
-Looking at the full distribution, we observe substantial overlap between
-all education levels. The wide interquartile ranges indicate that
-education alone does not determine salary — a Bachelor's degree holder
-can out-earn a PhD holder, depending on their role, location, and years
-of experience. Education appears to shift the distribution upward, but
-does not constrain an individual's earning potential at any level.
+The boxplot reveals substantial overlap across all education levels, confirming that education alone does not determine salary. While higher degrees shift the distribution upward, a Bachelor's holder can still out-earn a PhD depending on experience, role, and location.
 
 ### How does geography affect pay?
 
 #### Salary by Location
 
 ``` {r}
+# Calculate mean salary per location and plot as a horizontal bar chart, sorted highest to lowest
+
 df %>%
   group_by(location) %>%
   summarize(mean_salary = mean(salary), n = n()) %>%
@@ -286,23 +283,20 @@ df %>%
   ggtitle("Average Salary by Location")
 ```
 
-![](figures/salary_by_location.png)<!-- -->
+```{r}
+df %>%
+  group_by(location) %>%
+  summarize(mean_salary = mean(salary)) %>%
+  arrange(desc(mean_salary))
+```
 
-Geography is one of the most powerful salary determinants in the
-dataset. Workers in the USA earn $181,716 on average — the highest of
-any location. Canada is second at $167,391, followed by the UK at
-$160,075 and Germany at $153,376. Sweden, Australia, Singapore, and the
-Netherlands all cluster tightly between $139,294 and $139,442, suggesting
-these markets are similarly priced. The Remote category falls at
-$139,443, placing it on par with these mid-tier markets. India sits
-significantly below all other locations at $97,690, reflecting both
-cost-of-living differences and local market salary structures. The gap
-between the USA and India is $84,026 — nearly double — making location
-the single largest salary differentiator in the dataset.
+Geography is one of the most powerful salary determinants in the dataset. Workers in the USA earn $181,716 on average — the highest of any location. Canada is second at $167,391, followed by the UK at $160,075 and Germany at $153,376. Remote, Sweden, Australia, Singapore, and Netherlands all cluster tightly between $139,294 and $139,443, suggesting these markets are similarly priced. India sits significantly below all other locations at $97,690, reflecting cost-of-living differences and local market structures. The gap between the USA and India is $84,026 — making location the single largest salary differentiator in the dataset.
 
 #### Remote Work and Salary
 
-``` r
+``` {r}
+# Calculate mean salary by remote work status and plot as a bar chart
+
 df %>%
   group_by(remote_work) %>%
   summarize(mean_salary = mean(salary)) %>%
@@ -313,22 +307,20 @@ df %>%
   ggtitle("Average Salary by Remote Work Status")
 ```
 
-![](figures/salary_by_remote.png)<!-- -->
+```{r}
+df %>%
+  group_by(remote_work) %>%
+  summarize(mean_salary = mean(salary))
+```
 
-Fully remote workers earn a mean salary of $149,280, which is $5,348
-higher than hybrid workers ($143,970) and $5,348 higher than on-site
-workers ($143,932). The hybrid and on-site averages are nearly
-identical, suggesting that requiring physical presence — whether full
-or part-time — has no additional wage premium. The slight advantage for
-fully remote workers may reflect that remote roles attract applicants
-from higher-paying markets, or that companies offering full remote
-flexibility compensate for the arrangement with higher base salaries.
+Fully remote workers earn a mean salary of $149,280, which is $5,348 higher than hybrid workers ($143,970) and $5,348 higher than on-site workers ($143,932). The hybrid and on-site averages are nearly identical, suggesting that requiring physical presence — whether full or part-time — has no additional wage premium. The slight advantage for fully remote workers may reflect that remote roles attract applicants from higher-paying markets, or that companies offering full remote flexibility compensate with higher base salaries.
 
 ### Does company size determine salary outcomes?
 
 #### Company Size and Salary
 
-``` r
+``` {r}
+# Calculate mean salary per company size and plot as a bar chart
 df %>%
   group_by(company_size) %>%
   summarize(mean_salary = mean(salary)) %>%
@@ -338,24 +330,22 @@ df %>%
   xlab("Company Size") + ylab("Mean Salary (USD)") +
   ggtitle("Average Salary by Company Size")
 ```
+```{r}
+df %>%
+  group_by(company_size) %>%
+  summarize(mean_salary = mean(salary)) %>%
+  arrange(company_size)
+```
 
-![](figures/salary_by_companysize.png)<!-- -->
-
-There is a strong and monotonic relationship between company size and
-salary. Startups pay an average of $127,289, which is the lowest of all
-five size categories. As company size grows, average salary increases
-consistently: Small companies pay $134,357, Medium pay $141,538, Large
-pay $155,711, and Enterprise companies pay the most at $169,616. The
-gap between Startup and Enterprise is $42,327. This pattern is consistent
-with the idea that larger organizations have more financial resources,
-more structured compensation bands, and a greater ability to offer
-competitive salaries to attract senior talent.
+There is a strong and monotonic relationship between company size and salary. Startups pay an average of $127,289 — the lowest of all five categories. As company size grows, salary increases consistently: Small companies pay $134,357, Medium pay $141,538, Large pay $155,711, and Enterprise companies pay the most at $169,616. The gap between Startup and Enterprise is $42,327, suggesting that larger organizations have more financial resources and structured compensation bands to attract senior talent.
 
 ### Do skills and certifications translate into higher pay?
 
 #### Skills Count and Salary
 
-``` r
+``` {r}
+# Calculate mean salary per skills count and plot as a line chart
+
 df %>%
   group_by(skills_count) %>%
   summarize(mean_salary = mean(salary)) %>%
@@ -367,21 +357,18 @@ df %>%
   ggtitle("Mean Salary by Skills Count")
 ```
 
-![](figures/salary_by_skills.png)<!-- -->
+```{r}
+df %>%
+  group_by(skills_count) %>%
+  summarize(mean_salary = mean(salary)) %>%
+  arrange(skills_count)
+```
 
-The relationship between skills count and salary is positive but
-moderate. Workers listing only 1 skill earn an average of $137,788,
-while those listing 19 skills earn $153,156 — a difference of $15,368
-across the full range. The trend is consistently upward but with some
-noise, particularly in the middle of the range. The correlation between
-`skills_count` and `salary` is 0.13, making it a weaker predictor than
-experience but still meaningful. Employers appear to reward technical
-breadth, though the effect is smaller than the impact of job title or
-location.
+The line chart shows a positive relationship between skills count and salary. Workers with 1 skill earn an average of $137,788, while those with 19 skills earn $153,156 — a difference of $15,368. The growth is steady but moderate, consistent with the weak correlation of 0.13 observed earlier.
 
 #### Certifications and Salary
 
-``` r
+``` {r}
 df %>%
   group_by(certifications) %>%
   summarize(mean_salary = mean(salary)) %>%
@@ -392,7 +379,6 @@ df %>%
   ggtitle("Average Salary by Number of Certifications")
 ```
 
-![](figures/salary_by_certs.png)<!-- -->
 
 Certifications follow a consistent stair-step pattern. Workers with
 zero certifications earn $141,492 on average, while those with five
@@ -406,7 +392,7 @@ direction of the effect is notable.
 
 #### Industry and Salary
 
-``` r
+``` {r}
 df %>%
   group_by(industry) %>%
   summarize(mean_salary = mean(salary)) %>%
@@ -420,7 +406,6 @@ df %>%
   ggtitle("Average Salary by Industry")
 ```
 
-![](figures/salary_by_industry.png)<!-- -->
 
 In contrast to every other variable examined, industry shows almost no
 relationship with salary. All ten industries cluster tightly within a
@@ -438,7 +423,7 @@ sector in which the company operates.
 To evaluate our model on unseen data, we split the dataset into a
 training set (80%) and a test set (20%).
 
-``` r
+``` {r}
 set.seed(42)
 train_index <- createDataPartition(df$salary, p = 0.80, list = FALSE)
 train_data  <- df[ train_index, ]
@@ -447,13 +432,10 @@ test_data   <- df[-train_index, ]
 nrow(train_data)
 ```
 
-    ## [1] 200001
-
-``` r
+``` {r}
 nrow(test_data)
 ```
 
-    ## [1] 49999
 
 ### Model 1: Linear Regression
 
