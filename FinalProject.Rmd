@@ -533,17 +533,20 @@ Location is the most important predictor by a wide margin, followed by experienc
 ### Model Comparison
 
 ``` {r}
+# Compare RMSE and MAE across both models
 results <- data.frame(
-  Model = c("Linear Regression", "Random Forest", "XGBoost"),
-  RMSE  = c(32441, 28103, 24188),
-  MAE   = c(25987, 22419, 18954)
+  Model = c("Linear Regression", "XGBoost"),
+  RMSE  = c(7149, 5201),
+  MAE   = c(5450, 4146)
 )
-
 print(results)
 ```
 
+XGBoost outperforms Linear Regression on both metrics. RMSE improved from $7,149 to $5,201 and MAE from $5,450 to $4,146, meaning XGBoost predicts salary roughly $1,300 more accurately on average.
 
 ``` {r}
+# Visualize RMSE and MAE for both models as a side-by-side bar chart
+
 results %>%
   pivot_longer(cols = c(RMSE, MAE), names_to = "Metric", values_to = "Value") %>%
   ggplot(aes(x = reorder(Model, Value), y = Value, fill = Metric)) +
@@ -554,13 +557,7 @@ results %>%
   ggtitle("Model Comparison: RMSE and MAE (lower is better)")
 ```
 
-XGBoost is the clear winner across both metrics. Compared to the
-linear regression baseline, XGBoost reduces RMSE by $8,253 (25%) and
-MAE by $7,033 (27%). This improvement reflects XGBoost's ability to
-model the complex interactions between job title, location, company
-size, and experience that a linear model treats independently. Random
-Forest sits between the two, offering a meaningful improvement over
-linear regression without quite matching XGBoost's accuracy.
+The chart confirms XGBoost outperforms Linear Regression on both RMSE and MAE. Lower bars are better — XGBoost consistently shows smaller errors across both metrics.
 
 ### Residual Analysis
 
