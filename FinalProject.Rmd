@@ -23,13 +23,6 @@ In pursuit of the stated goal, we will explore the following questions:
 
 8. Are AI and Machine Learning roles actually earning more than traditional software roles, and does that gap hold across all locations?
 
-These are the main questions we are looking to answer through the
-completion of this project. With the findings we will be able to draw
-meaningful conclusions on tech compensation, and ultimately build a
-machine learning model capable of predicting salary from a worker's
-profile.
-
-
 These are the main questions we are looking to answer through the completion of this project. With the findings we will be able to draw meaningful conclusions on tech compensation, and ultimately build a machine learning model capable of predicting salary from a worker's profile.
 
 
@@ -344,7 +337,7 @@ The line chart shows a positive relationship between skills count and salary. Wo
 #### Certifications and Salary
 
 ``` {r}
-
+# Calculate mean salary per certification count and plot as a bar chart
 df %>%
   group_by(certifications) %>%
   summarize(mean_salary = mean(salary)) %>%
@@ -440,7 +433,7 @@ cat("MAE: ", round(mae(test_data$salary,  lm_preds), 0), "\n")
 
 The linear regression model produces an RMSE of $7,149 and an MAE of $5,450. This means on average the model's salary predictions are off by roughly $5,450. While this establishes a usable baseline, linear regression assumes straight-line relationships between predictors and salary, ignoring interactions and non-linear effects
 
-### Model 3: XGBoost
+### Model 2: XGBoost
 
 XGBoost (Extreme Gradient Boosting) builds trees sequentially, with
 each new tree correcting the errors of the previous ones. It is often
@@ -539,7 +532,7 @@ The chart confirms XGBoost outperforms Linear Regression on both RMSE and MAE. L
 To evaluate whether the best model makes systematic errors, we examined the distribution of residuals — the differences between actual and predicted salaries.
 
 ``` {r}
-#the distribution of residuals — the differences between actual and predicted salaries...
+# The distribution of residuals — the differences between actual and predicted salaries...
 
 residuals_df <- data.frame(
   actual    = test_data$salary,
@@ -560,7 +553,7 @@ ggplot(residuals_df, aes(x = predicted, y = actual)) +
 The predicted vs. actual plot shows predictions clustering tightly and consistently along the diagonal across the full salary range. The error remains stable from low to high earners with no widening at the extremes, confirming that XGBoost performs equally well across all salary levels.
 
 ``` {r}
-#The residuals form a tight, symmetric bell centered at zero.
+# The residuals form a tight, symmetric bell centered at zero.
 
 ggplot(residuals_df, aes(x = residual)) +
   geom_histogram(bins = 80, fill = "#276749", color = "white", alpha = 0.8) +
@@ -634,13 +627,11 @@ ggplot(df2, aes(x = education_level, y = salary, fill = education_level)) +
         legend.position = "none")
 ```
 
-
+After excluding High School workers, the faceted boxplot shows that education pays off more for Senior workers than Junior ones. For Junior workers (0–7 years), salary differences across education levels are relatively small. For Senior workers (8–20 years), the gap between Diploma and PhD is noticeably wider, with PhD holders earning significantly more. This suggests that advanced degrees become more valuable as workers gain experience — the combination of high education and seniority yields the highest salaries.
 
 ##QUESTION 8 
 ```{r}
 library(tidyverse)
-
-df <- read.csv("job_salary_prediction_dataset.csv")
 
 df %>%
   group_by(location, job_title) %>%
@@ -662,6 +653,6 @@ In conclusion, our analysis of 250,000 global tech job records and subsequent ma
 
 Job title is the most intuitive salary driver, with AI and machine learning roles commanding a premium of $50,000 or more over traditional analyst roles. Experience accumulates steadily and meaningfully, contributing roughly $54,000 across a 20-year career. Geography introduces the starkest divide of all, with US-based workers earning nearly double their Indian counterparts in the same roles. Company size matters significantly, with Enterprise employers paying $42,000 more than Startups on average. Education contributes a more modest premium, with PhD holders earning around $32,000 more than High School graduates. Skills and certifications are positively correlated with pay but explain relatively little of the overall variance. And industry, despite being a variable many job seekers consider carefully, turns out to be essentially irrelevant within the tech sector.
 
-In terms of prediction, XGBoost outperformed both linear regression and Random Forest, achieving an MAE of $18,954 on the held-out test set. This means that for most workers, the model can estimate annual salary within roughly $19,000 — a useful tool for benchmarking, but still subject to the noise introduced by factors not captured in the dataset, such as individual negotiation, equity compensation, and company-specific pay bands.
+In terms of prediction, XGBoost outperformed linear regression, achieving an MAE of $18,954 on the held-out test set. This means that for most workers, the model can estimate annual salary within roughly $19,000 — a useful tool for benchmarking, but still subject to the noise introduced by factors not captured in the dataset, such as individual negotiation, equity compensation, and company-specific pay bands.
 
 Further research could explore interaction effects — for example, whether the experience premium is larger for AI Engineers than for Data Analysts — and whether the location effect is stable across all job titles or concentrated in certain roles. Incorporating additional variables such as programming language, years at current company, and total compensation (including equity) would also improve the model's practical utility.
