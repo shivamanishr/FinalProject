@@ -563,7 +563,7 @@ ggplot(residuals_df, aes(x = residual)) +
   ggtitle("Distribution of Residuals (XGBoost)")
 ```
 
-The residual distribution is approximately bell-shaped and centered near zero, which is a desirable property. There are no dramatic long tails or asymmetry, indicating that the model does not systematically over- or under-predict salary for any particular segment of the data. The spread of roughly ±$24,000 is consistent with the reported RMSE.
+The residual distribution is approximately bell-shaped and centered near zero, which is a desirable property. There are no dramatic long tails or asymmetry, indicating that the model does not systematically over- or under-predict salary for any particular segment of the data. The spread of roughly ±$20,000 is consistent with the reported RMSE.
 
 ### Predicting a New Salary
 
@@ -596,7 +596,7 @@ cat("Predicted Salary: $", round(new_pred, 0), "\n")
 
 
 
-##Question 7
+### Question 7
 ```{r}
 # Reorder education_level from least to most educated
 df$education_level <- factor(df$education_level,
@@ -629,7 +629,7 @@ ggplot(df2, aes(x = education_level, y = salary, fill = education_level)) +
 
 After excluding High School workers, the faceted boxplot shows that education pays off more for Senior workers than Junior ones. For Junior workers (0–7 years), salary differences across education levels are relatively small. For Senior workers (8–20 years), the gap between Diploma and PhD is noticeably wider, with PhD holders earning significantly more. This suggests that advanced degrees become more valuable as workers gain experience — the combination of high education and seniority yields the highest salaries.
 
-##QUESTION 8 
+### QUESTION 8 
 ```{r}
 library(tidyverse)
 
@@ -645,7 +645,7 @@ df %>%
   theme_minimal()
 ```
 
-The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be used practically to benchmark salaries for any combination of inputs.
+he dot plot confirms that AI Engineer and Machine Learning Engineer consistently earn the most across almost all locations, while Data Analyst and Business Analyst remain at the bottom. The USA consistently has the highest dots for every job title, while India has the lowest. Notably, the gap between locations is visible across all roles meaning the location premium holds regardless of job title. This confirms that both job title and location independently influence salary, and their effects stack.
 
 ## Conclusion.
 
@@ -653,6 +653,6 @@ In conclusion, our analysis of 250,000 global tech job records and subsequent ma
 
 Job title is the most intuitive salary driver, with AI and machine learning roles commanding a premium of $50,000 or more over traditional analyst roles. Experience accumulates steadily and meaningfully, contributing roughly $54,000 across a 20-year career. Geography introduces the starkest divide of all, with US-based workers earning nearly double their Indian counterparts in the same roles. Company size matters significantly, with Enterprise employers paying $42,000 more than Startups on average. Education contributes a more modest premium, with PhD holders earning around $32,000 more than High School graduates. Skills and certifications are positively correlated with pay but explain relatively little of the overall variance. And industry, despite being a variable many job seekers consider carefully, turns out to be essentially irrelevant within the tech sector.
 
-In terms of prediction, XGBoost outperformed linear regression, achieving an MAE of $18,954 on the held-out test set. This means that for most workers, the model can estimate annual salary within roughly $19,000 — a useful tool for benchmarking, but still subject to the noise introduced by factors not captured in the dataset, such as individual negotiation, equity compensation, and company-specific pay bands.
+In terms of prediction, XGBoost outperformed linear regression, achieving an MAE of $4,146 on the held-out test set. This means that for most workers, the model can estimate annual salary within roughly $19,000 — a useful tool for benchmarking, but still subject to the noise introduced by factors not captured in the dataset, such as individual negotiation, equity compensation, and company-specific pay bands.
 
 Further research could explore interaction effects — for example, whether the experience premium is larger for AI Engineers than for Data Analysts — and whether the location effect is stable across all job titles or concentrated in certain roles. Incorporating additional variables such as programming language, years at current company, and total compensation (including equity) would also improve the model's practical utility.
