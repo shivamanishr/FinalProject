@@ -654,7 +654,7 @@ df %>%
   theme_minimal()
 ```
 
-The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be usedpractically to benchmark salaries for any combination of inputs.
+The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be used practically to benchmark salaries for any combination of inputs.
 
 ## Conclusion.
 
