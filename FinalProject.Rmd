@@ -341,6 +341,7 @@ There is a strong and monotonic relationship between company size and salary. St
 
 ### Do skills and certifications translate into higher pay?
 
+
 #### Skills Count and Salary
 
 ``` {r}
