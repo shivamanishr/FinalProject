@@ -34,7 +34,7 @@ In pursuit of the stated goal, we will explore the following questions:
 6.  Do the number of skills and certifications a worker holds translate
     into measurably higher pay?
     
-7.
+7. Does the salary premium of having a higher education degree depend on how much experience you have? Reorder the levels of education_level from least to most educated and exclude all High School workers from the rest of this question. How many records remain? Create a new variable that groups workers into "Junior" (0–7 years) and "Senior" (8–20 years). Find a plot that shows how the relationship between education level and salary differs between junior and senior workers, and comment on what you find.
 
 These are the main questions we are looking to answer through the
 completion of this project. With the findings we will be able to draw
@@ -636,6 +636,37 @@ new_pred   <- predict(xgb_model, xgb.DMatrix(new_matrix))
 cat("Predicted Salary: $", round(new_pred, 0), "\n")
 ```
 
+
+##Question 7
+```{r}
+# Reorder education_level from least to most educated
+df$education_level <- factor(df$education_level,
+                             levels = c("High School", "Diploma", "Bachelor",
+                                        "Master", "PhD"),
+                             ordered = TRUE)
+
+# Exclude High School workers
+df2 <- df %>% filter(education_level != "High School")
+nrow(df2)
+
+# Create Junior / Senior variable
+df2 <- df2 %>%
+  mutate(exp_group = ifelse(experience_years <= 7, "Junior", "Senior"),
+         exp_group = factor(exp_group, levels = c("Junior", "Senior")))
+
+# Does education pay off more when you're senior vs junior?
+ggplot(df2, aes(x = education_level, y = salary, fill = education_level)) +
+  geom_boxplot(outlier.alpha = 0.2) +
+  facet_wrap(~ exp_group) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab("Education Level") +
+  ylab("Salary (USD)") +
+  labs(fill = "Education Level") +
+  ggtitle("Does Education Pay Off More for Senior Workers?") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),
+        legend.position = "none")
+```
 The model predicts an annual salary of approximately $194,372 for this
 profile, which is consistent with what we would expect given the premium
 associated with the AI Engineer title, a USA location, and a Large
