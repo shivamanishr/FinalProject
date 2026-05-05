@@ -565,7 +565,7 @@ The chart confirms XGBoost outperforms Linear Regression on both RMSE and MAE. L
 To evaluate whether the best model makes systematic errors, we examined the distribution of residuals — the differences between actual and predicted salaries.
 
 ``` {r}
-#the distribution of residuals — the differences between actual and predicted salaries.
+#the distribution of residuals — the differences between actual and predicted salaries...
 
 residuals_df <- data.frame(
   actual    = test_data$salary,
