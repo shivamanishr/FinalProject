@@ -369,6 +369,7 @@ The line chart shows a positive relationship between skills count and salary. Wo
 #### Certifications and Salary
 
 ``` {r}
+
 df %>%
   group_by(certifications) %>%
   summarize(mean_salary = mean(salary)) %>%
@@ -393,6 +394,8 @@ direction of the effect is notable.
 #### Industry and Salary
 
 ``` {r}
+# Calculate mean salary per industry, zoom in using coord_cartesian to show differences clearly
+
 df %>%
   group_by(industry) %>%
   summarize(mean_salary = mean(salary)) %>%
@@ -400,21 +403,19 @@ df %>%
   ggplot(aes(x = reorder(industry, mean_salary), y = mean_salary)) +
   geom_col(fill = "#718096") +
   coord_flip() +
-  scale_y_continuous(labels = scales::dollar_format(),
-                     limits = c(144000, 147000)) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  coord_cartesian(ylim = c(145000, 146500)) +
   xlab("Industry") + ylab("Mean Salary (USD)") +
   ggtitle("Average Salary by Industry")
 ```
+```{r}
+df %>%
+  group_by(industry) %>%
+  summarize(mean_salary = mean(salary)) %>%
+  arrange(desc(mean_salary))
+```
 
-
-In contrast to every other variable examined, industry shows almost no
-relationship with salary. All ten industries cluster tightly within a
-range of $594 — from Retail at $145,400 to Education at $145,994.
-This is a surprising finding, as one might expect Finance or Technology
-to pay meaningfully more than Manufacturing or Government. The result
-suggests that within this dataset, the nature of the role, the worker's
-qualifications, and the employer's size and location far outweigh the
-sector in which the company operates.
+When zoomed in, the chart shows that all 10 industries fall within a very narrow range of just $594 — from Retail at $145,400 to Education at $145,994. While differences exist, they are negligibly small compared to other variables like location ($84,026 gap) or job title ($53,000 gap). Industry is effectively the weakest salary predictor in this dataset.
 
 ## Salary Prediction Model
 
@@ -424,6 +425,7 @@ To evaluate our model on unseen data, we split the dataset into a
 training set (80%) and a test set (20%).
 
 ``` {r}
+# Split data into 80% training and 20% test set using createDataPartition
 set.seed(42)
 train_index <- createDataPartition(df$salary, p = 0.80, list = FALSE)
 train_data  <- df[ train_index, ]
@@ -433,9 +435,11 @@ nrow(train_data)
 ```
 
 ``` {r}
+# Confirm the number of rows in the test set
 nrow(test_data)
 ```
 
+The dataset was split into 80% training (200,001 rows) and 20% test (49,999 rows). The model trains on the training set and is evaluated on the unseen test set to measure real prediction accuracy.
 
 ### Model 1: Linear Regression
 
@@ -444,7 +448,7 @@ regression fits a straight-line relationship between each predictor and
 the target variable. Before fitting the model, we one-hot encoded the
 factor variables into binary columns using `dummyVars`.
 
-``` r
+``` {r}
 dummy_model   <- dummyVars(salary ~ ., data = train_data, fullRank = TRUE)
 train_encoded <- predict(dummy_model, newdata = train_data) %>% as.data.frame()
 test_encoded  <- predict(dummy_model, newdata = test_data)  %>% as.data.frame()
@@ -459,12 +463,8 @@ cat("RMSE:", round(rmse(test_data$salary, lm_preds), 0), "\n")
 cat("MAE: ", round(mae(test_data$salary,  lm_preds), 0), "\n")
 ```
 
-    ## RMSE: 32441
-    ## MAE:  25987
 
-The linear regression model produces a root mean squared error (RMSE)
-of approximately $32,441 and a mean absolute error (MAE) of $25,987.
-This means that on average, the model's salary predictions are off by
+The linear regression model produces a root mean squared error (RMSE) of approximately $32,441 and a mean absolute error (MAE) of $25,987. This means that on average, the model's salary predictions are off by
 roughly $26,000. While this establishes a usable baseline, the
 assumption of linear relationships between each predictor and salary
 is a limitation, as interactions and non-linear effects are ignored.
@@ -476,7 +476,7 @@ subset of the data and a random subset of features, then averages
 their predictions. This approach captures non-linear relationships
 and interactions between variables that linear regression cannot model.
 
-``` r
+``` {r}
 set.seed(42)
 rf_model <- randomForest(
   salary ~ .,
@@ -492,19 +492,14 @@ cat("RMSE:", round(rmse(test_data$salary, rf_preds), 0), "\n")
 cat("MAE: ", round(mae(test_data$salary,  rf_preds), 0), "\n")
 ```
 
-    ## RMSE: 28103
-    ## MAE:  22419
-
 Random Forest improves over linear regression on both metrics, with
 an RMSE of $28,103 and an MAE of $22,419. We then examined which
 variables contributed most to the model's predictions using the
 built-in feature importance measure.
 
-``` r
+``` {r}
 varImpPlot(rf_model, main = "Random Forest: Variable Importance")
 ```
-
-![](figures/rf_importance.png)<!-- -->
 
 The feature importance plot shows that `experience_years` is by far the
 most important predictor, followed by `location` and `job_title`.
@@ -520,7 +515,7 @@ each new tree correcting the errors of the previous ones. It is often
 the most accurate algorithm for tabular data. XGBoost requires all
 inputs to be numeric, so we encoded factors as integers before fitting.
 
-``` r
+``` {r}
 encode_for_xgb <- function(data) {
   data %>%
     mutate(across(where(is.factor), as.integer)) %>%
@@ -558,27 +553,23 @@ xgb_model <- xgb.train(
     ## [200]  train-rmse:22013.18   test-rmse:24512.07
     ## [300]  train-rmse:20184.65   test-rmse:24188.22
 
-``` r
+``` {r}
 xgb_preds <- predict(xgb_model, dtest)
 
 cat("RMSE:", round(rmse(test_data$salary, xgb_preds), 0), "\n")
 cat("MAE: ", round(mae(test_data$salary,  xgb_preds), 0), "\n")
 ```
 
-    ## RMSE: 24188
-    ## MAE:  18954
-
 XGBoost achieves the best performance of the three models, with an
 RMSE of $24,188 and an MAE of $18,954. We then inspected which
 features the model relied on most heavily.
 
-``` r
+``` {r}
 xgb_importance <- xgb.importance(model = xgb_model)
 xgb.plot.importance(xgb_importance, top_n = 10,
                     main = "XGBoost: Feature Importance (Gain)")
 ```
 
-![](figures/xgb_importance.png)<!-- -->
 
 The XGBoost feature importance plot confirms that `experience_years`
 is the single most important predictor by a wide margin, consistent with
@@ -589,7 +580,7 @@ differences we observed across industries during the exploratory phase.
 
 ### Model Comparison
 
-``` r
+``` {r}
 results <- data.frame(
   Model = c("Linear Regression", "Random Forest", "XGBoost"),
   RMSE  = c(32441, 28103, 24188),
@@ -599,12 +590,8 @@ results <- data.frame(
 print(results)
 ```
 
-    ##               Model  RMSE   MAE
-    ## 1 Linear Regression 32441 25987
-    ## 2     Random Forest 28103 22419
-    ## 3           XGBoost 24188 18954
 
-``` r
+``` {r}
 results %>%
   pivot_longer(cols = c(RMSE, MAE), names_to = "Metric", values_to = "Value") %>%
   ggplot(aes(x = reorder(Model, Value), y = Value, fill = Metric)) +
@@ -614,8 +601,6 @@ results %>%
   xlab(NULL) + ylab("Error (USD)") +
   ggtitle("Model Comparison: RMSE and MAE (lower is better)")
 ```
-
-![](figures/model_comparison.png)<!-- -->
 
 XGBoost is the clear winner across both metrics. Compared to the
 linear regression baseline, XGBoost reduces RMSE by $8,253 (25%) and
@@ -631,7 +616,7 @@ To evaluate whether the best model makes systematic errors, we examined
 the distribution of residuals — the differences between actual and
 predicted salaries.
 
-``` r
+``` {r}
 residuals_df <- data.frame(
   actual    = test_data$salary,
   predicted = xgb_preds,
@@ -647,7 +632,6 @@ ggplot(residuals_df, aes(x = predicted, y = actual)) +
   ggtitle("Predicted vs. Actual Salary (XGBoost)")
 ```
 
-![](figures/predicted_vs_actual.png)<!-- -->
 
 The predicted vs. actual plot shows that the majority of predictions
 fall close to the diagonal line, which represents a perfect prediction.
@@ -656,7 +640,7 @@ suggesting the model underestimates salaries for the highest earners.
 This is common in regression models, where extreme values at the tails
 are harder to predict accurately.
 
-``` r
+``` {r}
 ggplot(residuals_df, aes(x = residual)) +
   geom_histogram(bins = 80, fill = "#276749", color = "white", alpha = 0.8) +
   geom_vline(xintercept = 0, color = "#c84b11", linewidth = 1, linetype = "dashed") +
@@ -664,8 +648,6 @@ ggplot(residuals_df, aes(x = residual)) +
   xlab("Residual (Actual - Predicted)") + ylab("Count") +
   ggtitle("Distribution of Residuals (XGBoost)")
 ```
-
-![](figures/residuals_hist.png)<!-- -->
 
 The residual distribution is approximately bell-shaped and centered near
 zero, which is a desirable property. There are no dramatic long tails or
@@ -681,7 +663,7 @@ for a hypothetical AI Engineer with 8 years of experience, a Master's
 degree, 12 skills, and 3 certifications, working at a Large company in
 the USA in a Hybrid arrangement.
 
-``` r
+``` {r}
 new_employee <- data.frame(
   job_title        = factor("AI Engineer",    levels = levels(df$job_title)),
   experience_years = 8,
@@ -703,8 +685,6 @@ new_pred   <- predict(xgb_model, xgb.DMatrix(new_matrix))
 
 cat("Predicted Salary: $", round(new_pred, 0), "\n")
 ```
-
-    ## Predicted Salary: $ 194372
 
 The model predicts an annual salary of approximately $194,372 for this
 profile, which is consistent with what we would expect given the premium
