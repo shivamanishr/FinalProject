@@ -42,7 +42,7 @@ profile.
 
 ## Data
 
-### Structure
+## Structure
 
 The dataset used in this project is the Job Salary Prediction Dataset,
 sourced from Kaggle. It contains 250,000 rows, each representing a
