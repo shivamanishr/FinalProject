@@ -668,7 +668,7 @@ practically to benchmark salaries for any combination of inputs.
 The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be used practically to benchmark salaries for any combination of inputs.
 
 
-## Conclusion
+## Conclusion.
 
 In conclusion, our analysis of 250,000 global tech job records and subsequent machine learning models have shed light on several important drivers of salary in the technology industry. The most consistent finding throughout our analysis was that salary is heavily influenced by a small number of factors, while others — most notably industry — have almost no impact at all.
 
