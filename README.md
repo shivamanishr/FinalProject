@@ -20,18 +20,7 @@ In pursuit of the stated goal, we will explore the following questions:
     
 7. Does the salary premium of having a higher education degree depend on how much experience you have? Reorder the levels of education_level from least to most educated and exclude all High School workers from the rest of this question. How many records remain? Create a new variable that groups workers into "Junior" (0–7 years) and "Senior" (8–20 years). Find a plot that shows how the relationship between education level and salary differs between junior and senior workers, and comment on what you find.
 
-
-8. Are AI and Machine Learning roles actually earning more than traditional software roles, and does that gap hold across all locations?
-
-These are the main questions we are looking to answer through the
-completion of this project. With the findings we will be able to draw
-meaningful conclusions on tech compensation, and ultimately build a
-machine learning model capable of predicting salary from a worker's
-profile.
-
-
 These are the main questions we are looking to answer through the completion of this project. With the findings we will be able to draw meaningful conclusions on tech compensation, and ultimately build a machine learning model capable of predicting salary from a worker's profile.
-
 
 ## Data
 
@@ -599,10 +588,6 @@ new_pred   <- predict(xgb_model, xgb.DMatrix(new_matrix))
 cat("Predicted Salary: $", round(new_pred, 0), "\n")
 ```
 
-
-
-
-
 ##Question 7
 ```{r}
 # Reorder education_level from least to most educated
@@ -634,34 +619,17 @@ ggplot(df2, aes(x = education_level, y = salary, fill = education_level)) +
         legend.position = "none")
 ```
 
-
-
-##QUESTION 8 
-```{r}
-library(tidyverse)
-
-df <- read.csv("job_salary_prediction_dataset.csv")
-
-df %>%
-  group_by(location, job_title) %>%
-  summarise(mean_salary = mean(salary), .groups = "drop") %>%
-  mutate(job_title = fct_reorder(job_title, mean_salary)) %>%
-  ggplot(aes(x = mean_salary, y = job_title, color = location)) +
-  geom_point(size = 2.5, alpha = 0.8) +
-  scale_x_continuous(labels = scales::dollar_format()) +
-  labs(title = "Mean Salary by Job Title and Location",
-       x = "Mean Salary (USD)", y = NULL, color = "Location") +
-  theme_minimal()
-```
-
 The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be usedpractically to benchmark salaries for any combination of inputs.
 
 ## Conclusion.
 
 In conclusion, our analysis of 250,000 global tech job records and subsequent machine learning models have shed light on several important drivers of salary in the technology industry. The most consistent finding throughout our analysis was that salary is heavily influenced by a small number of factors, while others — most notably industry — have almost no impact at all.
 
-Job title is the most intuitive salary driver, with AI and machine learning roles commanding a premium of $50,000 or more over traditional analyst roles. Experience accumulates steadily and meaningfully, contributing roughly $54,000 across a 20-year career. Geography introduces the starkest divide of all, with US-based workers earning nearly double their Indian counterparts in the same roles. Company size matters significantly, with Enterprise employers paying $42,000 more than Startups on average. Education contributes a more modest premium, with PhD holders earning around $32,000 more than High School graduates. Skills and certifications are positively correlated with pay but explain relatively little of the overall variance. And industry, despite being a variable many job seekers consider carefully, turns out to be essentially irrelevant within the tech sector.
+Job title is the most intuitive salary driver, with AI and machine learning roles commanding a premium of $50,000 or more over traditional analyst roles. Experience accumulates steadily and meaningfully, contributing roughly $54,000 across a 20-year career. Geography introduces the starkest divide of all, with US-based workers earning nearly double their Indian counterparts in the same roles. Company size matters significantly, with Enterprise employers paying $42,000 more than Startups on average. Education contributes a more modest premium, with PhD holders earning around $32,000 more than High School graduates. Skills and certifications are positively correlated with pay but explain
+relatively little of the overall variance. And industry, despite being a variable many job seekers consider carefully, turns out to be essentially irrelevant within the tech sector.
 
-In terms of prediction, XGBoost outperformed both linear regression and Random Forest, achieving an MAE of $18,954 on the held-out test set. This means that for most workers, the model can estimate annual salary within roughly $19,000 — a useful tool for benchmarking, but still subject to the noise introduced by factors not captured in the dataset, such as individual negotiation, equity compensation, and company-specific pay bands.
+In terms of prediction, XGBoost outperformed both linear regression and Random Forest, achieving an MAE of $18,954 on the held-out test set. This means that for most workers, the model can estimate annual salary
+within roughly $19,000 — a useful tool for benchmarking, but still subject to the noise introduced by factors not captured in the dataset, such as individual negotiation, equity compensation, and company-specific pay bands.
 
-Further research could explore interaction effects — for example, whether the experience premium is larger for AI Engineers than for Data Analysts — and whether the location effect is stable across all job titles or concentrated in certain roles. Incorporating additional variables such as programming language, years at current company, and total compensation (including equity) would also improve the model's practical utility.
+Further research could explore interaction effects — for example, whether the experience premium is larger for AI Engineers than for Data Analysts — and whether the location effect is stable across all
+job titles or concentrated in certain roles. Incorporating additional variables such as programming language, years at current company, and total compensation (including equity) would also improve the model's practical utility.
