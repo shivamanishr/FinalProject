@@ -565,6 +565,8 @@ The chart confirms XGBoost outperforms Linear Regression on both RMSE and MAE. L
 To evaluate whether the best model makes systematic errors, we examined the distribution of residuals — the differences between actual and predicted salaries.
 
 ``` {r}
+#the distribution of residuals — the differences between actual and predicted salaries.
+
 residuals_df <- data.frame(
   actual    = test_data$salary,
   predicted = xgb_preds,
@@ -581,14 +583,11 @@ ggplot(residuals_df, aes(x = predicted, y = actual)) +
 ```
 
 
-The predicted vs. actual plot shows that the majority of predictions
-fall close to the diagonal line, which represents a perfect prediction.
-There is a slight fan-shape at the upper end of the salary range,
-suggesting the model underestimates salaries for the highest earners.
-This is common in regression models, where extreme values at the tails
-are harder to predict accurately.
+The predicted vs. actual plot shows predictions clustering tightly and consistently along the diagonal across the full salary range. The error remains stable from low to high earners with no widening at the extremes, confirming that XGBoost performs equally well across all salary levels.
 
 ``` {r}
+#The residuals form a tight, symmetric bell centered at zero.
+
 ggplot(residuals_df, aes(x = residual)) +
   geom_histogram(bins = 80, fill = "#276749", color = "white", alpha = 0.8) +
   geom_vline(xintercept = 0, color = "#c84b11", linewidth = 1, linetype = "dashed") +
@@ -597,19 +596,11 @@ ggplot(residuals_df, aes(x = residual)) +
   ggtitle("Distribution of Residuals (XGBoost)")
 ```
 
-The residual distribution is approximately bell-shaped and centered near
-zero, which is a desirable property. There are no dramatic long tails or
-asymmetry, indicating that the model does not systematically over- or
-under-predict salary for any particular segment of the data. The spread
-of roughly ±$24,000 is consistent with the reported RMSE.
+The residual distribution is approximately bell-shaped and centered near zero, which is a desirable property. There are no dramatic long tails or asymmetry, indicating that the model does not systematically over- or under-predict salary for any particular segment of the data. The spread of roughly ±$24,000 is consistent with the reported RMSE.
 
 ### Predicting a New Salary
 
-Once trained, the XGBoost model can be used to estimate the salary for
-any new combination of job attributes. Below is an example prediction
-for a hypothetical AI Engineer with 8 years of experience, a Master's
-degree, 12 skills, and 3 certifications, working at a Large company in
-the USA in a Hybrid arrangement.
+Once trained, the XGBoost model can be used to estimate the salary for any new combination of job attributes. Below is an example prediction for a hypothetical AI Engineer with 8 years of experience, a Master's degree, 12 skills, and 3 certifications, working at a Large company in the USA in a Hybrid arrangement.
 
 ``` {r}
 new_employee <- data.frame(
@@ -634,47 +625,17 @@ new_pred   <- predict(xgb_model, xgb.DMatrix(new_matrix))
 cat("Predicted Salary: $", round(new_pred, 0), "\n")
 ```
 
-The model predicts an annual salary of approximately $194,372 for this
-profile, which is consistent with what we would expect given the premium
-associated with the AI Engineer title, a USA location, and a Large
-company employer. This demonstrates how the model can be used
-practically to benchmark salaries for any combination of inputs.
+The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be used practically to benchmark salaries for any combination of inputs.
 
 ## Conclusion
 
-In conclusion, our analysis of 250,000 global tech job records and
-subsequent machine learning models have shed light on several important
-drivers of salary in the technology industry. The most consistent
-finding throughout our analysis was that salary is heavily influenced by
-a small number of factors, while others — most notably industry — have
-almost no impact at all.
+In conclusion, our analysis of 250,000 global tech job records and subsequent machine learning models have shed light on several important drivers of salary in the technology industry. The most consistent finding throughout our analysis was that salary is heavily influenced by a small number of factors, while others — most notably industry — have almost no impact at all.
 
-Job title is the most intuitive salary driver, with AI and machine
-learning roles commanding a premium of $50,000 or more over traditional
-analyst roles. Experience accumulates steadily and meaningfully,
-contributing roughly $54,000 across a 20-year career. Geography
-introduces the starkest divide of all, with US-based workers earning
-nearly double their Indian counterparts in the same roles. Company size
-matters significantly, with Enterprise employers paying $42,000 more
-than Startups on average. Education contributes a more modest premium,
-with PhD holders earning around $32,000 more than High School graduates.
-Skills and certifications are positively correlated with pay but explain
-relatively little of the overall variance. And industry, despite being
-a variable many job seekers consider carefully, turns out to be
-essentially irrelevant within the tech sector.
+Job title is the most intuitive salary driver, with AI and machine learning roles commanding a premium of $50,000 or more over traditional analyst roles. Experience accumulates steadily and meaningfully, contributing roughly $54,000 across a 20-year career. Geography introduces the starkest divide of all, with US-based workers earning nearly double their Indian counterparts in the same roles. Company size matters significantly, with Enterprise employers paying $42,000 more than Startups on average. Education contributes a more modest premium, with PhD holders earning around $32,000 more than High School graduates. Skills and certifications are positively correlated with pay but explain
+relatively little of the overall variance. And industry, despite being a variable many job seekers consider carefully, turns out to be essentially irrelevant within the tech sector.
 
-In terms of prediction, XGBoost outperformed both linear regression and
-Random Forest, achieving an MAE of $18,954 on the held-out test set.
-This means that for most workers, the model can estimate annual salary
-within roughly $19,000 — a useful tool for benchmarking, but still
-subject to the noise introduced by factors not captured in the dataset,
-such as individual negotiation, equity compensation, and company-specific
-pay bands.
+In terms of prediction, XGBoost outperformed both linear regression and Random Forest, achieving an MAE of $18,954 on the held-out test set. This means that for most workers, the model can estimate annual salary
+within roughly $19,000 — a useful tool for benchmarking, but still subject to the noise introduced by factors not captured in the dataset, such as individual negotiation, equity compensation, and company-specific pay bands.
 
-Further research could explore interaction effects — for example,
-whether the experience premium is larger for AI Engineers than for
-Data Analysts — and whether the location effect is stable across all
-job titles or concentrated in certain roles. Incorporating additional
-variables such as programming language, years at current company, and
-total compensation (including equity) would also improve the model's
-practical utility.
+Further research could explore interaction effects — for example, whether the experience premium is larger for AI Engineers than for Data Analysts — and whether the location effect is stable across all
+job titles or concentrated in certain roles. Incorporating additional variables such as programming language, years at current company, and total compensation (including equity) would also improve the model's practical utility.
