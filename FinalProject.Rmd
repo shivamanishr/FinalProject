@@ -15,59 +15,29 @@ estimate salary given a set of job attributes.
 
 In pursuit of the stated goal, we will explore the following questions:
 
-1.  Which job titles command the highest salaries? Are AI and machine
-    learning roles outpacing traditional software engineering positions?
+1. Which job titles command the highest salaries? Are AI and machine learning roles outpacing traditional software engineering positions?
 
-2.  How does experience level shape compensation? Is the relationship
-    linear, or are there inflection points where salary growth
-    accelerates?
+2. How does experience level shape compensation? Is the relationship linear, or are there inflection points where salary growth accelerates?
 
-3.  Does education level significantly impact salary? What is the
-    real-world premium for a PhD versus a Bachelor's degree?
+3. Does education level significantly impact salary? What is the real-world premium for a PhD versus a Bachelor's degree?
 
-4.  How does geography affect pay? Which locations offer the highest
-    compensation, and does fully remote work close the gap?
+4. How does geography affect pay? Which locations offer the highest compensation, and does fully remote work close the gap?
 
-5.  Does company size determine salary outcomes? Are large enterprises
-    or startups more generous to tech workers?
+5. Does company size determine salary outcomes? Are large enterprises or startups more generous to tech workers?
 
-6.  Do the number of skills and certifications a worker holds translate
-    into measurably higher pay?
+6. Do the number of skills and certifications a worker holds translate into measurably higher pay?
     
 7. Does the salary premium of having a higher education degree depend on how much experience you have? Reorder the levels of education_level from least to most educated and exclude all High School workers from the rest of this question. How many records remain? Create a new variable that groups workers into "Junior" (0–7 years) and "Senior" (8–20 years). Find a plot that shows how the relationship between education level and salary differs between junior and senior workers, and comment on what you find.
 
-These are the main questions we are looking to answer through the
-completion of this project. With the findings we will be able to draw
-meaningful conclusions on tech compensation, and ultimately build a
-machine learning model capable of predicting salary from a worker's
-profile.
+These are the main questions we are looking to answer through the completion of this project. With the findings we will be able to draw meaningful conclusions on tech compensation, and ultimately build a machine learning model capable of predicting salary from a worker's profile.
 
 ## Data
 
 ## Structure
 
-The dataset used in this project is the Job Salary Prediction Dataset,
-sourced from Kaggle. It contains 250,000 rows, each representing a
-unique job record, and 10 variables covering the worker's role,
-qualifications, employer characteristics, and annual salary in USD.
-The dataset spans 12 distinct job titles across 10 industries and 10
-geographic locations, making it a broad cross-section of the global
-tech labor market.
+The dataset used in this project is the Job Salary Prediction Dataset, sourced from Kaggle. It contains 250,000 rows, each representing a unique job record, and 10 variables covering the worker's role, qualifications, employer characteristics, and annual salary in USD. The dataset spans 12 distinct job titles across 10 industries and 10 geographic locations, making it a broad cross-section of the global tech labor market.
 
-The variables in the dataset are as follows. `job_title` records the
-employee's role such as AI Engineer or Data Analyst. `experience_years`
-is a numeric variable ranging from 0 to 20 years. `education_level` is
-an ordinal variable with five levels: High School, Diploma, Bachelor,
-Master, and PhD. `skills_count` records the number of technical skills
-the employee lists, ranging from 1 to 19. `industry` captures the
-sector the employer operates in, such as Finance, Healthcare, or
-Technology. `company_size` is an ordinal variable with five levels:
-Startup, Small, Medium, Large, and Enterprise. `location` records the
-country where the role is based, or "Remote" if the worker has no fixed
-location. `remote_work` specifies whether the arrangement is fully
-remote, hybrid, or on-site. `certifications` counts the number of
-professional certifications the worker holds, from 0 to 5. Finally,
-`salary` is the target variable — the annual salary in US dollars.
+The variables in the dataset are as follows. `job_title` records the employee's role such as AI Engineer or Data Analyst. `experience_years` is a numeric variable ranging from 0 to 20 years. `education_level` is an ordinal variable with five levels: High School, Diploma, Bachelor, Master, and PhD. `skills_count` records the number of technical skills the employee lists, ranging from 1 to 19. `industry` captures the sector the employer operates in, such as Finance, Healthcare, or Technology. `company_size` is an ordinal variable with five levels: Startup, Small, Medium, Large, and Enterprise. `location` records the country where the role is based, or "Remote" if the worker has no fixed location. `remote_work` specifies whether the arrangement is fully remote, hybrid, or on-site. `certifications` counts the number of professional certifications the worker holds, from 0 to 5. Finally, `salary` is the target variable — the annual salary in US dollars.
 
 ### Cleaning
 
@@ -627,8 +597,6 @@ new_pred   <- predict(xgb_model, xgb.DMatrix(new_matrix))
 cat("Predicted Salary: $", round(new_pred, 0), "\n")
 ```
 
-<<<<<<< HEAD
-
 ##Question 7
 ```{r}
 # Reorder education_level from least to most educated
@@ -659,11 +627,8 @@ ggplot(df2, aes(x = education_level, y = salary, fill = education_level)) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1),
         legend.position = "none")
 ```
-The model predicts an annual salary of approximately $194,372 for this
-profile, which is consistent with what we would expect given the premium
-associated with the AI Engineer title, a USA location, and a Large
-company employer. This demonstrates how the model can be used
-practically to benchmark salaries for any combination of inputs.
+
+The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be usedpractically to benchmark salaries for any combination of inputs.
 
 The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be used practically to benchmark salaries for any combination of inputs.
 
