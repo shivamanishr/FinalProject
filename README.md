@@ -20,18 +20,7 @@ In pursuit of the stated goal, we will explore the following questions:
     
 7. Does the salary premium of having a higher education degree depend on how much experience you have? Reorder the levels of education_level from least to most educated and exclude all High School workers from the rest of this question. How many records remain? Create a new variable that groups workers into "Junior" (0–7 years) and "Senior" (8–20 years). Find a plot that shows how the relationship between education level and salary differs between junior and senior workers, and comment on what you find.
 
-
-8. Are AI and Machine Learning roles actually earning more than traditional software roles, and does that gap hold across all locations?
-
-These are the main questions we are looking to answer through the
-completion of this project. With the findings we will be able to draw
-meaningful conclusions on tech compensation, and ultimately build a
-machine learning model capable of predicting salary from a worker's
-profile.
-
-
 These are the main questions we are looking to answer through the completion of this project. With the findings we will be able to draw meaningful conclusions on tech compensation, and ultimately build a machine learning model capable of predicting salary from a worker's profile.
-
 
 ## Data
 
@@ -599,10 +588,6 @@ new_pred   <- predict(xgb_model, xgb.DMatrix(new_matrix))
 cat("Predicted Salary: $", round(new_pred, 0), "\n")
 ```
 
-
-
-
-
 ##Question 7
 ```{r}
 # Reorder education_level from least to most educated
@@ -634,39 +619,7 @@ ggplot(df2, aes(x = education_level, y = salary, fill = education_level)) +
         legend.position = "none")
 ```
 
-
-
-
-##QUESTION 8 
-```{r}
-library(tidyverse)
-
-df <- read.csv("job_salary_prediction_dataset.csv")
-
-df %>%
-  group_by(location, job_title) %>%
-  summarise(mean_salary = mean(salary), .groups = "drop") %>%
-  mutate(job_title = fct_reorder(job_title, mean_salary)) %>%
-  ggplot(aes(x = mean_salary, y = job_title, color = location)) +
-  geom_point(size = 2.5, alpha = 0.8) +
-  scale_x_continuous(labels = scales::dollar_format()) +
-  labs(title = "Mean Salary by Job Title and Location",
-       x = "Mean Salary (USD)", y = NULL, color = "Location") +
-  theme_minimal()
-```
-
-
-The model predicts an annual salary of approximately $194,372 for this
-profile, which is consistent with what we would expect given the premium
-associated with the AI Engineer title, a USA location, and a Large
-company employer. This demonstrates how the model can be used
-practically to benchmark salaries for any combination of inputs.
-
 The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be usedpractically to benchmark salaries for any combination of inputs.
-
-
-The model predicts an annual salary of approximately $194,372 for this profile, which is consistent with what we would expect given the premium associated with the AI Engineer title, a USA location, and a Large company employer. This demonstrates how the model can be used practically to benchmark salaries for any combination of inputs.
-
 
 ## Conclusion.
 
