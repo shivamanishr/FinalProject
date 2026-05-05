@@ -1,6 +1,6 @@
 # Salary Prediction Analysis on Global Tech Jobs
 
-## Introduction 
+## Introduction hii
 
 The goal of this project is to explore a dataset of tech industry job
 listings to better understand what drives salary differences across
@@ -340,6 +340,7 @@ df %>%
 There is a strong and monotonic relationship between company size and salary. Startups pay an average of $127,289 — the lowest of all five categories. As company size grows, salary increases consistently: Small companies pay $134,357, Medium pay $141,538, Large pay $155,711, and Enterprise companies pay the most at $169,616. The gap between Startup and Enterprise is $42,327, suggesting that larger organizations have more financial resources and structured compensation bands to attract senior talent.
 
 ### Do skills and certifications translate into higher pay?
+
 
 #### Skills Count and Salary
 
