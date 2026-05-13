@@ -85,74 +85,12 @@ First, we read in the dataset and inspected its structure.
 
 ``` r
 library(tidyverse)
-```
-
-    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-    ## ✔ dplyr     1.2.0     ✔ readr     2.2.0
-    ## ✔ forcats   1.0.1     ✔ stringr   1.6.0
-    ## ✔ ggplot2   4.0.3     ✔ tibble    3.3.1
-    ## ✔ lubridate 1.9.5     ✔ tidyr     1.3.2
-    ## ✔ purrr     1.2.1     
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-
-``` r
 library(caret)
-```
-
-    ## Loading required package: lattice
-    ## 
-    ## Attaching package: 'caret'
-    ## 
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     lift
-
-``` r
 library(randomForest)
-```
-
-    ## randomForest 4.7-1.2
-    ## Type rfNews() to see new features/changes/bug fixes.
-    ## 
-    ## Attaching package: 'randomForest'
-    ## 
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     combine
-    ## 
-    ## The following object is masked from 'package:ggplot2':
-    ## 
-    ##     margin
-
-``` r
 library(xgboost)
 library(Metrics)
-```
 
-    ## 
-    ## Attaching package: 'Metrics'
-    ## 
-    ## The following objects are masked from 'package:caret':
-    ## 
-    ##     precision, recall
-
-``` r
 df <- read_csv("job_salary_prediction_dataset.csv")
-```
-
-    ## Rows: 250000 Columns: 10
-    ## ── Column specification ────────────────────────────────────────────────────────
-    ## Delimiter: ","
-    ## chr (6): job_title, education_level, industry, company_size, location, remot...
-    ## dbl (4): experience_years, skills_count, certifications, salary
-    ## 
-    ## ℹ Use `spec()` to retrieve the full column specification for this data.
-    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-
-``` r
 glimpse(df)
 ```
 
@@ -696,9 +634,6 @@ df %>%
   ggtitle("Average Salary by Industry")
 ```
 
-    ## Coordinate system already present.
-    ## ℹ Adding new coordinate system, which will replace the existing one.
-
 ![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 ``` r
@@ -1078,7 +1013,7 @@ the location premium holds regardless of job title. This confirms that
 both job title and location independently influence salary, and their
 effects stack.
 
-## Conclusion.
+## Conclusion
 
 In conclusion, our analysis of 250,000 global tech job records and
 subsequent machine learning models have shed light on several important

@@ -1,6 +1,9 @@
 ---
 output: github_document
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
 
 ## Introduction 
 
@@ -637,7 +640,7 @@ df %>%
 
 The dot plot confirms that AI Engineer and Machine Learning Engineer consistently earn the most across almost all locations, while Data Analyst and Business Analyst remain at the bottom. The USA consistently has the highest dots for every job title, while India has the lowest. Notably, the gap between locations is visible across all roles meaning the location premium holds regardless of job title. This confirms that both job title and location independently influence salary, and their effects stack.
 
-## Conclusion.
+## Conclusion
 
 In conclusion, our analysis of 250,000 global tech job records and subsequent machine learning models have shed light on several important drivers of salary in the technology industry. The most consistent finding throughout our analysis was that salary is heavily influenced by a small number of factors, while others — most notably industry — have almost no impact at all.
 
