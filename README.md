@@ -5,7 +5,7 @@ output: github_document
 
 # Global Tech Salary Prediction and Analysis
 
-### Shiva Manish Reddy  
+### Shiva Manish Reddy, Sravya Bhavanam, Kavya Bhavanam, Chaitanya Arravelli  
 ### DS202 Final Project
 
 ## Introduction
