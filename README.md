@@ -29,6 +29,18 @@ The following research questions are explored throughout the analysis:
 
 # Data
 
+## Structure
+
+The dataset used in this project contains approximately 250,000 global technology job records collected from multiple countries, industries, and company types. The dataset includes information related to employee salaries, experience levels, education backgrounds, job titles, certifications, company size, and geographic location.
+
+Each row in the dataset represents an individual employee record, while each column represents a salary-related feature or attribute. The dataset contains both numerical and categorical variables that were used for exploratory data analysis and machine learning prediction models.
+
+The numerical variables in the dataset include salary and years of experience. The categorical variables include education level, company size, industry, location, certifications, and job title. These variables allow the project to analyze both quantitative and qualitative factors affecting salaries in the technology industry.
+
+In creating a cohesive dataset for analysis, the variables selected were chosen specifically because they are strongly related to salary prediction and workforce trends. Including too many unrelated variables would increase model complexity and reduce interpretability, so the analysis focused on the most meaningful salary-related features.
+
+The dataset was structured in tabular format, making it suitable for preprocessing, visualization, statistical analysis, and machine learning workflows. This structure also allowed efficient splitting of the data into training and testing datasets for predictive modeling.
+
 ## Dataset Description
 
 The dataset contains approximately 250,000 global technology job records with information related to salary, experience, education, location, job title, company size, certifications, and industry.
