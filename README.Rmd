@@ -1,5 +1,4 @@
 ---
-title: "Global Tech Salary Prediction and Analysis"
 output: github_document
 ---
 
