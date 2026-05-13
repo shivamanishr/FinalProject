@@ -1,75 +1,41 @@
-# FinalProject
-Job salary prediction
-
-
-# Salary Prediction Analysis on Global Tech Jobs
+---
+title: "Global Tech Salary Prediction and Analysis"
+output: github_document
+---
 
 ## Introduction 
 
-The goal of this project is to explore a dataset of tech industry job
-listings to better understand what drives salary differences across
-roles, locations, and qualifications. The technology sector is one of
-the fastest-growing industries worldwide, and compensation varies
-enormously depending on a wide range of factors. Analysis on this topic
-can help job seekers benchmark their earnings, guide career decisions,
-and reveal which qualifications translate most directly into higher pay.
-Ultimately, our goal is to understand the circumstances under which tech
-professionals earn more — and to build a predictive model that can
-estimate salary given a set of job attributes.
+The goal of this project is to explore a dataset of tech industry job listings to better understand what drives salary differences across roles, locations, and qualifications. The technology sector is one of the fastest-growing industries worldwide, and compensation varies enormously depending on a wide range of factors. Analysis on this topic can help job seekers benchmark their earnings, guide career decisions, and reveal which qualifications translate most directly into higher pay. Ultimately, our goal is to understand the circumstances under which tech professionals earn more — and to build a predictive model that can estimate salary given a set of job attributes.
 
 In pursuit of the stated goal, we will explore the following questions:
 
-1.  Which job titles command the highest salaries? Are AI and machine
-    learning roles outpacing traditional software engineering positions?
+1. Which job titles command the highest salaries? Are AI and machine learning roles outpacing traditional software engineering positions?
 
-2.  How does experience level shape compensation? Is the relationship
-    linear, or are there inflection points where salary growth
-    accelerates?
+2. How does experience level shape compensation? Is the relationship linear, or are there inflection points where salary growth accelerates?
 
-3.  Does education level significantly impact salary? What is the
-    real-world premium for a PhD versus a Bachelor's degree?
+3. Does education level significantly impact salary? What is the real-world premium for a PhD versus a Bachelor's degree?
 
-4.  How does geography affect pay? Which locations offer the highest
-    compensation, and does fully remote work close the gap?
+4. How does geography affect pay? Which locations offer the highest compensation, and does fully remote work close the gap?
 
-5.  Does company size determine salary outcomes? Are large enterprises
-    or startups more generous to tech workers?
+5. Does company size determine salary outcomes? Are large enterprises or startups more generous to tech workers?
 
-6.  Do the number of skills and certifications a worker holds translate
-    into measurably higher pay?
+6. Do the number of skills and certifications a worker holds translate into measurably higher pay?
+    
+7. Does the salary premium of having a higher education degree depend on how much experience you have? Reorder the levels of education_level from least to most educated and exclude all High School workers from the rest of this question. How many records remain? Create a new variable that groups workers into "Junior" (0–7 years) and "Senior" (8–20 years). Find a plot that shows how the relationship between education level and salary differs between junior and senior workers, and comment on what you find.
 
-These are the main questions we are looking to answer through the
-completion of this project. With the findings we will be able to draw
-meaningful conclusions on tech compensation, and ultimately build a
-machine learning model capable of predicting salary from a worker's
-profile.
+
+8. Are AI and Machine Learning roles actually earning more than traditional software roles, and does that gap hold across all locations?
+
+These are the main questions we are looking to answer through the completion of this project. With the findings we will be able to draw meaningful conclusions on tech compensation, and ultimately build a machine learning model capable of predicting salary from a worker's profile.
+
 
 ## Data
 
-### Structure
+## Structure
 
-The dataset used in this project is the Job Salary Prediction Dataset,
-sourced from Kaggle. It contains 250,000 rows, each representing a
-unique job record, and 10 variables covering the worker's role,
-qualifications, employer characteristics, and annual salary in USD.
-The dataset spans 12 distinct job titles across 10 industries and 10
-geographic locations, making it a broad cross-section of the global
-tech labor market.
+The dataset used in this project is the Job Salary Prediction Dataset, sourced from Kaggle. It contains 250,000 rows, each representing a unique job record, and 10 variables covering the worker's role, qualifications, employer characteristics, and annual salary in USD. The dataset spans 12 distinct job titles across 10 industries and 10 geographic locations, making it a broad cross-section of the global tech labor market.
 
-The variables in the dataset are as follows. `job_title` records the
-employee's role such as AI Engineer or Data Analyst. `experience_years`
-is a numeric variable ranging from 0 to 20 years. `education_level` is
-an ordinal variable with five levels: High School, Diploma, Bachelor,
-Master, and PhD. `skills_count` records the number of technical skills
-the employee lists, ranging from 1 to 19. `industry` captures the
-sector the employer operates in, such as Finance, Healthcare, or
-Technology. `company_size` is an ordinal variable with five levels:
-Startup, Small, Medium, Large, and Enterprise. `location` records the
-country where the role is based, or "Remote" if the worker has no fixed
-location. `remote_work` specifies whether the arrangement is fully
-remote, hybrid, or on-site. `certifications` counts the number of
-professional certifications the worker holds, from 0 to 5. Finally,
-`salary` is the target variable — the annual salary in US dollars.
+The variables in the dataset are as follows. `job_title` records the employee's role such as AI Engineer or Data Analyst. `experience_years` is a numeric variable ranging from 0 to 20 years. `education_level` is an ordinal variable with five levels: High School, Diploma, Bachelor, Master, and PhD. `skills_count` records the number of technical skills the employee lists, ranging from 1 to 19. `industry` captures the sector the employer operates in, such as Finance, Healthcare, or Technology. `company_size` is an ordinal variable with five levels: Startup, Small, Medium, Large, and Enterprise. `location` records the country where the role is based, or "Remote" if the worker has no fixed location. `remote_work` specifies whether the arrangement is fully remote, hybrid, or on-site. `certifications` counts the number of professional certifications the worker holds, from 0 to 5. Finally, `salary` is the target variable — the annual salary in US dollars.
 
 ### Cleaning
 
@@ -319,7 +285,7 @@ df %>%
 
 Fully remote workers earn a mean salary of $149,280, which is $5,348 higher than hybrid workers ($143,970) and $5,348 higher than on-site workers ($143,932). The hybrid and on-site averages are nearly identical, suggesting that requiring physical presence — whether full or part-time — has no additional wage premium. The slight advantage for fully remote workers may reflect that remote roles attract applicants from higher-paying markets, or that companies offering full remote flexibility compensate with higher base salaries.
 
-### Does company size determine salary outcomes?
+### Q5. Does company size determine salary outcomes?
 
 #### Company Size and Salary
 
@@ -343,7 +309,8 @@ df %>%
 
 There is a strong and monotonic relationship between company size and salary. Startups pay an average of $127,289 — the lowest of all five categories. As company size grows, salary increases consistently: Small companies pay $134,357, Medium pay $141,538, Large pay $155,711, and Enterprise companies pay the most at $169,616. The gap between Startup and Enterprise is $42,327, suggesting that larger organizations have more financial resources and structured compensation bands to attract senior talent.
 
-### Do skills and certifications translate into higher pay?
+### Q6. Do skills and certifications translate into higher pay?
+
 
 #### Skills Count and Salary
 
@@ -373,7 +340,7 @@ The line chart shows a positive relationship between skills count and salary. Wo
 #### Certifications and Salary
 
 ``` {r}
-
+# Calculate mean salary per certification count and plot as a bar chart
 df %>%
   group_by(certifications) %>%
   summarize(mean_salary = mean(salary)) %>%
@@ -385,15 +352,7 @@ df %>%
 ```
 
 
-Certifications follow a consistent stair-step pattern. Workers with
-zero certifications earn $141,492 on average, while those with five
-certifications earn $149,607 — a gain of $8,115. Each additional
-certification adds between $1,200 and $2,000 to average salary. The
-relationship is smooth and monotonic with no reversals, suggesting
-that certifications are reliably associated with higher pay. The
-correlation between `certifications` and `salary` is 0.07, making
-it the weakest numeric predictor in the dataset, but the consistent
-direction of the effect is notable.
+Certifications follow a consistent stair-step pattern. Workers with zero certifications earn $141,492 on average, while those with five certifications earn $149,607 — a gain of $8,115. Each additional certification adds between $1,200 and $2,000 to average salary. The relationship is smooth and monotonic with no reversals, suggesting that certifications are reliably associated with higher pay. The correlation between `certifications` and `salary` is 0.07, making it the weakest numeric predictor in the dataset, but the consistent direction of the effect is notable.
 
 #### Industry and Salary
 
@@ -469,7 +428,7 @@ cat("MAE: ", round(mae(test_data$salary,  lm_preds), 0), "\n")
 
 The linear regression model produces an RMSE of $7,149 and an MAE of $5,450. This means on average the model's salary predictions are off by roughly $5,450. While this establishes a usable baseline, linear regression assumes straight-line relationships between predictors and salary, ignoring interactions and non-linear effects
 
-### Model 3: XGBoost
+### Model 2: XGBoost
 
 XGBoost (Extreme Gradient Boosting) builds trees sequentially, with
 each new tree correcting the errors of the previous ones. It is often
@@ -565,11 +524,11 @@ The chart confirms XGBoost outperforms Linear Regression on both RMSE and MAE. L
 
 ### Residual Analysis
 
-To evaluate whether the best model makes systematic errors, we examined
-the distribution of residuals — the differences between actual and
-predicted salaries.
+To evaluate whether the best model makes systematic errors, we examined the distribution of residuals — the differences between actual and predicted salaries.
 
 ``` {r}
+# The distribution of residuals — the differences between actual and predicted salaries...
+
 residuals_df <- data.frame(
   actual    = test_data$salary,
   predicted = xgb_preds,
@@ -586,14 +545,11 @@ ggplot(residuals_df, aes(x = predicted, y = actual)) +
 ```
 
 
-The predicted vs. actual plot shows that the majority of predictions
-fall close to the diagonal line, which represents a perfect prediction.
-There is a slight fan-shape at the upper end of the salary range,
-suggesting the model underestimates salaries for the highest earners.
-This is common in regression models, where extreme values at the tails
-are harder to predict accurately.
+The predicted vs. actual plot shows predictions clustering tightly and consistently along the diagonal across the full salary range. The error remains stable from low to high earners with no widening at the extremes, confirming that XGBoost performs equally well across all salary levels.
 
 ``` {r}
+# The residuals form a tight, symmetric bell centered at zero.
+
 ggplot(residuals_df, aes(x = residual)) +
   geom_histogram(bins = 80, fill = "#276749", color = "white", alpha = 0.8) +
   geom_vline(xintercept = 0, color = "#c84b11", linewidth = 1, linetype = "dashed") +
@@ -602,19 +558,11 @@ ggplot(residuals_df, aes(x = residual)) +
   ggtitle("Distribution of Residuals (XGBoost)")
 ```
 
-The residual distribution is approximately bell-shaped and centered near
-zero, which is a desirable property. There are no dramatic long tails or
-asymmetry, indicating that the model does not systematically over- or
-under-predict salary for any particular segment of the data. The spread
-of roughly ±$24,000 is consistent with the reported RMSE.
+The residual distribution is approximately bell-shaped and centered near zero, which is a desirable property. There are no dramatic long tails or asymmetry, indicating that the model does not systematically over- or under-predict salary for any particular segment of the data. The spread of roughly ±$20,000 is consistent with the reported RMSE.
 
 ### Predicting a New Salary
 
-Once trained, the XGBoost model can be used to estimate the salary for
-any new combination of job attributes. Below is an example prediction
-for a hypothetical AI Engineer with 8 years of experience, a Master's
-degree, 12 skills, and 3 certifications, working at a Large company in
-the USA in a Hybrid arrangement.
+Once trained, the XGBoost model can be used to estimate the salary for any new combination of job attributes. Below is an example prediction for a hypothetical AI Engineer with 8 years of experience, a Master's degree, 12 skills, and 3 certifications, working at a Large company in the USA in a Hybrid arrangement.
 
 ``` {r}
 new_employee <- data.frame(
@@ -639,47 +587,63 @@ new_pred   <- predict(xgb_model, xgb.DMatrix(new_matrix))
 cat("Predicted Salary: $", round(new_pred, 0), "\n")
 ```
 
-The model predicts an annual salary of approximately $194,372 for this
-profile, which is consistent with what we would expect given the premium
-associated with the AI Engineer title, a USA location, and a Large
-company employer. This demonstrates how the model can be used
-practically to benchmark salaries for any combination of inputs.
 
-## Conclusion
+### Question 7
+```{r}
+# Reorder education_level from least to most educated
+df$education_level <- factor(df$education_level,
+                             levels = c("High School", "Diploma", "Bachelor",
+                                        "Master", "PhD"),
+                             ordered = TRUE)
 
-In conclusion, our analysis of 250,000 global tech job records and
-subsequent machine learning models have shed light on several important
-drivers of salary in the technology industry. The most consistent
-finding throughout our analysis was that salary is heavily influenced by
-a small number of factors, while others — most notably industry — have
-almost no impact at all.
+# Exclude High School workers
+df2 <- df %>% filter(education_level != "High School")
+nrow(df2)
 
-Job title is the most intuitive salary driver, with AI and machine
-learning roles commanding a premium of $50,000 or more over traditional
-analyst roles. Experience accumulates steadily and meaningfully,
-contributing roughly $54,000 across a 20-year career. Geography
-introduces the starkest divide of all, with US-based workers earning
-nearly double their Indian counterparts in the same roles. Company size
-matters significantly, with Enterprise employers paying $42,000 more
-than Startups on average. Education contributes a more modest premium,
-with PhD holders earning around $32,000 more than High School graduates.
-Skills and certifications are positively correlated with pay but explain
-relatively little of the overall variance. And industry, despite being
-a variable many job seekers consider carefully, turns out to be
-essentially irrelevant within the tech sector.
+# Create Junior / Senior variable
+df2 <- df2 %>%
+  mutate(exp_group = ifelse(experience_years <= 7, "Junior", "Senior"),
+         exp_group = factor(exp_group, levels = c("Junior", "Senior")))
 
-In terms of prediction, XGBoost outperformed both linear regression and
-Random Forest, achieving an MAE of $18,954 on the held-out test set.
-This means that for most workers, the model can estimate annual salary
-within roughly $19,000 — a useful tool for benchmarking, but still
-subject to the noise introduced by factors not captured in the dataset,
-such as individual negotiation, equity compensation, and company-specific
-pay bands.
+# Does education pay off more when you're senior vs junior?
+ggplot(df2, aes(x = education_level, y = salary, fill = education_level)) +
+  geom_boxplot(outlier.alpha = 0.2) +
+  facet_wrap(~ exp_group) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab("Education Level") +
+  ylab("Salary (USD)") +
+  labs(fill = "Education Level") +
+  ggtitle("Does Education Pay Off More for Senior Workers?") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),
+        legend.position = "none")
+```
 
-Further research could explore interaction effects — for example,
-whether the experience premium is larger for AI Engineers than for
-Data Analysts — and whether the location effect is stable across all
-job titles or concentrated in certain roles. Incorporating additional
-variables such as programming language, years at current company, and
-total compensation (including equity) would also improve the model's
-practical utility.
+After excluding High School workers, the faceted boxplot shows that education pays off more for Senior workers than Junior ones. For Junior workers (0–7 years), salary differences across education levels are relatively small. For Senior workers (8–20 years), the gap between Diploma and PhD is noticeably wider, with PhD holders earning significantly more. This suggests that advanced degrees become more valuable as workers gain experience — the combination of high education and seniority yields the highest salaries.
+
+### QUESTION 8 
+```{r}
+
+df %>%
+  group_by(location, job_title) %>%
+  summarise(mean_salary = mean(salary), .groups = "drop") %>%
+  mutate(job_title = fct_reorder(job_title, mean_salary)) %>%
+  ggplot(aes(x = mean_salary, y = job_title, color = location)) +
+  geom_point(size = 2.5, alpha = 0.8) +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  labs(title = "Mean Salary by Job Title and Location",
+       x = "Mean Salary (USD)", y = NULL, color = "Location") +
+  theme_minimal()
+```
+
+The dot plot confirms that AI Engineer and Machine Learning Engineer consistently earn the most across almost all locations, while Data Analyst and Business Analyst remain at the bottom. The USA consistently has the highest dots for every job title, while India has the lowest. Notably, the gap between locations is visible across all roles meaning the location premium holds regardless of job title. This confirms that both job title and location independently influence salary, and their effects stack.
+
+## Conclusion.
+
+In conclusion, our analysis of 250,000 global tech job records and subsequent machine learning models have shed light on several important drivers of salary in the technology industry. The most consistent finding throughout our analysis was that salary is heavily influenced by a small number of factors, while others — most notably industry — have almost no impact at all.
+
+Job title is the most intuitive salary driver, with AI and machine learning roles commanding a premium of $50,000 or more over traditional analyst roles. Experience accumulates steadily and meaningfully, contributing roughly $54,000 across a 20-year career. Geography introduces the starkest divide of all, with US-based workers earning nearly double their Indian counterparts in the same roles. Company size matters significantly, with Enterprise employers paying $42,000 more than Startups on average. Education contributes a more modest premium, with PhD holders earning around $32,000 more than High School graduates. Skills and certifications are positively correlated with pay but explain relatively little of the overall variance. And industry, despite being a variable many job seekers consider carefully, turns out to be essentially irrelevant within the tech sector.
+
+In terms of prediction, XGBoost outperformed linear regression, achieving an MAE of $4,146 on the held-out test set. This means that for most workers, the model can estimate annual salary within roughly $19,000, a useful tool for benchmarking, but still subject to the noise introduced by factors not captured in the dataset, such as individual negotiation, equity compensation, and company-specific pay bands.
+
+Further research could explore interaction effects — for example, whether the experience premium is larger for AI Engineers than for Data Analysts — and whether the location effect is stable across all job titles or concentrated in certain roles. Incorporating additional variables such as programming language, years at current company, and total compensation (including equity) would also improve the model's practical utility.
