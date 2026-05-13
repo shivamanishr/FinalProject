@@ -1,5 +1,7 @@
-# Salary Prediction Analysis on Global Tech Jobs
-
+---
+title: "Global Tech Salary Prediction and Analysis"
+output: github_document
+---
 ## Introduction 
 
 The goal of this project is to explore a dataset of tech industry job listings to better understand what drives salary differences across roles, locations, and qualifications. The technology sector is one of the fastest-growing industries worldwide, and compensation varies enormously depending on a wide range of factors. Analysis on this topic can help job seekers benchmark their earnings, guide career decisions, and reveal which qualifications translate most directly into higher pay. Ultimately, our goal is to understand the circumstances under which tech professionals earn more — and to build a predictive model that can estimate salary given a set of job attributes.
