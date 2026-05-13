@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-Global Tech Salary Prediction and Analysis
-================
-
-## Introduction
-
-The goal of this project is to explore a dataset of tech industry job
-listings to better understand what drives salary differences across
-roles, locations, and qualifications. The technology sector is one of
-the fastest-growing industries worldwide, and compensation varies
-enormously depending on a wide range of factors. Analysis on this topic
-can help job seekers benchmark their earnings, guide career decisions,
-and reveal which qualifications translate most directly into higher pay.
-Ultimately, our goal is to understand the circumstances under which tech
-professionals earn more — and to build a predictive model that can
-estimate salary given a set of job attributes.
-=======
 ---
 title: "Global Tech Salary Prediction and Analysis"
 output: github_document
@@ -24,11 +7,10 @@ output: github_document
 
 ### Shiva Manish Reddy, Sravya Bhavanam, Kavya Bhavanam, Chaitanya Arravelli  
 ### DS202 Final Project
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
+
 
 ## Introduction
 
-<<<<<<< HEAD
 1.  Which job titles command the highest salaries? Are AI and machine
     learning roles outpacing traditional software engineering positions?
 
