@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Global Tech Salary Prediction and Analysis
 ================
 
@@ -14,21 +13,9 @@ and reveal which qualifications translate most directly into higher pay.
 Ultimately, our goal is to understand the circumstances under which tech
 professionals earn more — and to build a predictive model that can
 estimate salary given a set of job attributes.
-=======
----
-title: "Global Tech Salary Prediction and Analysis"
-output: github_document
----
 
-# Global Tech Salary Prediction and Analysis
+In pursuit of the stated goal, we will explore the following questions:
 
-### Shiva Manish Reddy, Sravya Bhavanam, Kavya Bhavanam, Chaitanya Arravelli  
-### DS202 Final Project
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
-
-## Introduction
-
-<<<<<<< HEAD
 1.  Which job titles command the highest salaries? Are AI and machine
     learning roles outpacing traditional software engineering positions?
 
@@ -93,57 +80,10 @@ role is based, or “Remote” if the worker has no fixed location.
 or on-site. `certifications` counts the number of professional
 certifications the worker holds, from 0 to 5. Finally, `salary` is the
 target variable — the annual salary in US dollars.
-=======
-The goal of this project is to analyze global technology salary data and determine which factors most strongly influence salaries in the tech industry. Using machine learning and data visualization techniques, this project explores relationships between salary and variables such as experience, location, education, company size, certifications, and job title.
 
-This project also builds predictive machine learning models to estimate salaries using real-world technology job data.
+### Cleaning
 
-The following research questions are explored throughout the analysis:
-
-1. Which factors influence salary the most?
-2. How strongly does experience affect salary?
-3. How much does location affect salary?
-4. Do education levels significantly impact salary?
-5. Which job titles earn the highest salaries?
-6. Does company size influence salary?
-7. Are skills and certifications strong salary predictors?
-8. Which machine learning model predicts salary most accurately?
-
----
-
-# Data
-
-## Structure
-
-The dataset used in this project contains approximately 250,000 global technology job records collected from multiple countries, industries, and company types. The dataset includes information related to employee salaries, experience levels, education backgrounds, job titles, certifications, company size, and geographic location.
-
-Each row in the dataset represents an individual employee record, while each column represents a salary-related feature or attribute. The dataset contains both numerical and categorical variables that were used for exploratory data analysis and machine learning prediction models.
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
-
-The numerical variables in the dataset include salary and years of experience. The categorical variables include education level, company size, industry, location, certifications, and job title. These variables allow the project to analyze both quantitative and qualitative factors affecting salaries in the technology industry.
-
-In creating a cohesive dataset for analysis, the variables selected were chosen specifically because they are strongly related to salary prediction and workforce trends. Including too many unrelated variables would increase model complexity and reduce interpretability, so the analysis focused on the most meaningful salary-related features.
-
-The dataset was structured in tabular format, making it suitable for preprocessing, visualization, statistical analysis, and machine learning workflows. This structure also allowed efficient splitting of the data into training and testing datasets for predictive modeling.
-
-## Dataset Description
-
-The dataset contains approximately 250,000 global technology job records with information related to salary, experience, education, location, job title, company size, certifications, and industry.
-
-## Variables Used
-
-- salary
-- experience_years
-- education
-- job_title
-- company_size
-- industry
-- certifications
-- location
-
----
-
-# Libraries Used
+First, we read in the dataset and inspected its structure.
 
 ``` r
 library(tidyverse)
@@ -162,7 +102,6 @@ library(tidyverse)
 
 ``` r
 library(caret)
-<<<<<<< HEAD
 ```
 
     ## Loading required package: lattice
@@ -347,39 +286,21 @@ end, Business Analyst averages \$122,551 and Data Analyst averages
 compensation within the same industry. The strong performance of AI and
 machine learning roles reflects the high demand for these
 specializations in the current market.
-=======
-library(xgboost)
-library(Metrics)
-library(scales)
-```
 
----
+#### Salary Distribution by Job Title
 
-# Loading Data
-
-```{r}
-df <- read_csv("salary_dataset.csv")
-```
-
----
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
-
-# Data Cleaning and Preprocessing
-
-<<<<<<< HEAD
 ``` r
 # Plot the full salary distribution for each job title using boxplots, ordered by median salary
-=======
-Several preprocessing steps were performed before analysis:
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 
-- Removed missing values
-- Converted categorical variables into factors
-- Prepared data for machine learning models
-- Encoded categorical variables
-- Split dataset into training and testing data
+df %>%
+  ggplot(aes(x = reorder(job_title, salary, FUN = median), y = salary)) +
+  geom_boxplot(fill = "#e8f0fb", color = "#2b6cb0") +
+  coord_flip() +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab("Job Title") + ylab("Salary (USD)") +
+  ggtitle("Salary Distribution by Job Title")
+```
 
-<<<<<<< HEAD
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 The boxplot view reveals not just the averages but the spread within
@@ -388,39 +309,25 @@ that salary is not solely determined by title. Even Data Analysts, the
 lowest-paid group on average, have individuals earning over \$200,000.
 This indicates that other factors — experience, location, company size —
 contribute heavily to individual outcomes within each role.
-=======
-The dataset was divided into:
-- 80% training data
-- 20% testing data
 
-This allowed the models to be evaluated on unseen data.
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
+### How does experience level shape compensation?
 
----
+#### Experience and Salary
 
-# Research Question 1:
-# Which factors influence salary the most?
-
-<<<<<<< HEAD
 ``` r
 # Calculate mean salary for each experience year and plot as a line chart to show salary growth over time
-=======
-## Experience and Salary
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 
-```{r}
 df %>%
   group_by(experience_years) %>%
   summarize(mean_salary = mean(salary)) %>%
   ggplot(aes(x = experience_years, y = mean_salary)) +
-  geom_line(linewidth = 1) +
-  scale_y_continuous(labels = dollar_format()) +
-  xlab("Years of Experience") +
-  ylab("Mean Salary (USD)") +
-  ggtitle("Experience and Salary")
+  geom_line(color = "#c84b11", linewidth = 1.2) +
+  geom_point(color = "#c84b11", size = 2.5) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab("Years of Experience") + ylab("Mean Salary (USD)") +
+  ggtitle("Mean Salary by Years of Experience")
 ```
 
-<<<<<<< HEAD
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 The line chart shows a clear and consistent positive relationship
@@ -440,19 +347,9 @@ cor(df$experience_years, df$salary)
 
 The correlation between `experience_years` and `salary` is 0.44, making
 it the strongest numeric predictor in the dataset.
-=======
-The graph shows a strong positive relationship between experience and salary. Workers with more years of experience consistently earn higher salaries. Salary growth appears steady across the career span.
 
-```{r}
-cor(df$experience_years, df$salary)
-```
+#### Experience and Salary by Job Title
 
-The correlation between experience and salary is approximately 0.44, making experience one of the strongest predictors in the dataset.
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
-
----
-
-<<<<<<< HEAD
 ``` r
 # Plot salary growth by experience for selected job titles using a line chart
 
@@ -518,21 +415,16 @@ df %>%
   xlab("Education Level") + ylab("Mean Salary (USD)") +
   ggtitle("Average Salary by Education Level")
 ```
-=======
-# Research Question 2:
-# Which job titles earn the highest salaries?
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 df %>%
-  group_by(job_title) %>%
+  group_by(education_level) %>%
   summarize(mean_salary = mean(salary)) %>%
-  arrange(desc(mean_salary))
+  arrange(education_level)
 ```
 
-<<<<<<< HEAD
     ## # A tibble: 5 × 2
     ##   education_level mean_salary
     ##   <ord>                 <dbl>
@@ -589,14 +481,6 @@ df %>%
   xlab("Location") + ylab("Mean Salary (USD)") +
   ggtitle("Average Salary by Location")
 ```
-=======
-The analysis shows that AI Engineer and Machine Learning Engineer positions consistently earn the highest salaries, while Data Analyst and Business Analyst positions remain among the lower-paying roles.
-
----
-
-# Research Question 3:
-# How much does location affect salary?
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
@@ -607,7 +491,6 @@ df %>%
   arrange(desc(mean_salary))
 ```
 
-<<<<<<< HEAD
     ## # A tibble: 10 × 2
     ##    location    mean_salary
     ##    <fct>             <dbl>
@@ -632,13 +515,9 @@ significantly below all other locations at \$97,690, reflecting
 cost-of-living differences and local market structures. The gap between
 the USA and India is \$84,026 — making location the single largest
 salary differentiator in the dataset.
-=======
-Location was one of the strongest salary predictors in the dataset. Workers located in the United States consistently earned significantly higher salaries than workers in other countries, especially compared to India.
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 
----
+#### Remote Work and Salary
 
-<<<<<<< HEAD
 ``` r
 # Calculate mean salary by remote work status and plot as a bar chart
 
@@ -695,19 +574,12 @@ df %>%
 ![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 ``` r
-=======
-# Research Question 4:
-# Does company size influence salary?
-
-```{r}
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 df %>%
   group_by(company_size) %>%
   summarize(mean_salary = mean(salary)) %>%
-  arrange(desc(mean_salary))
+  arrange(company_size)
 ```
 
-<<<<<<< HEAD
     ## # A tibble: 5 × 2
     ##   company_size mean_salary
     ##   <ord>              <dbl>
@@ -832,23 +704,12 @@ df %>%
 ![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 ``` r
-=======
-The analysis showed that enterprise companies generally paid higher salaries than startups and smaller companies.
-
----
-
-# Research Question 5:
-# Does industry influence salary?
-
-```{r}
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 df %>%
   group_by(industry) %>%
   summarize(mean_salary = mean(salary)) %>%
   arrange(desc(mean_salary))
 ```
 
-<<<<<<< HEAD
     ## # A tibble: 10 × 2
     ##    industry      mean_salary
     ##    <fct>               <dbl>
@@ -869,31 +730,22 @@ at \$145,994. While differences exist, they are negligibly small
 compared to other variables like location (\$84,026 gap) or job title
 (\$53,000 gap). Industry is effectively the weakest salary predictor in
 this dataset.
-=======
-Industry was found to be one of the weakest salary predictors in the dataset. Salary differences between industries were relatively small compared to differences caused by location or job title.
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 
----
+## Salary Prediction Model
 
-# Salary Prediction Models
+### Train / Test Split
 
-## Train/Test Split
+To evaluate our model on unseen data, we split the dataset into a
+training set (80%) and a test set (20%).
 
-<<<<<<< HEAD
 ``` r
 # Split data into 80% training and 20% test set using createDataPartition
-=======
-```{r}
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 set.seed(42)
-
 train_index <- createDataPartition(df$salary, p = 0.80, list = FALSE)
-
-train_data <- df[train_index, ]
-test_data  <- df[-train_index, ]
+train_data  <- df[ train_index, ]
+test_data   <- df[-train_index, ]
 
 nrow(train_data)
-<<<<<<< HEAD
 ```
 
     ## [1] 200001
@@ -908,16 +760,9 @@ nrow(test_data)
 The dataset was split into 80% training (200,001 rows) and 20% test
 (49,999 rows). The model trains on the training set and is evaluated on
 the unseen test set to measure real prediction accuracy.
-=======
-nrow(test_data)
-```
 
-The dataset was split into 80% training data and 20% testing data. The models were trained on the training set and evaluated using unseen testing data.
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
+### Model 1: Linear Regression
 
----
-
-<<<<<<< HEAD
 We began with a linear regression model as our baseline. Linear
 regression fits a straight-line relationship between each predictor and
 the target variable. Before fitting the model, we one-hot encoded the
@@ -926,25 +771,18 @@ factor variables into binary columns using `dummyVars`.
 ``` r
 # One-hot encode factor variables, fit linear regression model, 
 # and evaluate using RMSE and MAE on test set
-=======
-# Model 1: Linear Regression
 
-```{r}
-dummy_model <- dummyVars(salary ~ ., data = train_data, fullRank = TRUE)
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
-
+dummy_model   <- dummyVars(salary ~ ., data = train_data, fullRank = TRUE)
 train_encoded <- predict(dummy_model, newdata = train_data) %>% as.data.frame()
-test_encoded  <- predict(dummy_model, newdata = test_data) %>% as.data.frame()
+test_encoded  <- predict(dummy_model, newdata = test_data)  %>% as.data.frame()
 
 train_encoded$salary <- train_data$salary
 test_encoded$salary  <- test_data$salary
 
 lm_model <- lm(salary ~ ., data = train_encoded)
-
 lm_preds <- predict(lm_model, newdata = test_encoded)
 
 cat("RMSE:", round(rmse(test_data$salary, lm_preds), 0), "\n")
-<<<<<<< HEAD
 ```
 
     ## RMSE: 7149
@@ -976,22 +814,6 @@ library(Metrics)
 
 ``` r
 # Encode factors as integers, build XGBoost model, and evaluate on test set
-=======
-cat("MAE:", round(mae(test_data$salary, lm_preds), 0), "\n")
-```
-
-The Linear Regression model achieved:
-- RMSE: 7149
-- MAE: 5450
-
-This model establishes a strong baseline but struggles to fully capture complex non-linear relationships between variables.
-
----
-
-# Model 2: XGBoost
-
-```{r}
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 encode_for_xgb <- function(data) {
   data %>%
     mutate(across(where(is.factor), as.integer)) %>%
@@ -1003,18 +825,27 @@ X_train <- encode_for_xgb(train_data)
 X_test  <- encode_for_xgb(test_data)
 
 dtrain <- xgb.DMatrix(data = X_train, label = train_data$salary)
-dtest  <- xgb.DMatrix(data = X_test, label = test_data$salary)
+dtest  <- xgb.DMatrix(data = X_test,  label = test_data$salary)
 
 xgb_params <- list(
-  objective = "reg:squarederror",
-  eta = 0.1,
-  max_depth = 6,
-  subsample = 0.8,
+  objective        = "reg:squarederror",
+  eta              = 0.1,
+  max_depth        = 6,
+  subsample        = 0.8,
   colsample_bytree = 0.8
+)
+
+set.seed(42)
+xgb_model <- xgb.train(
+  params        = xgb_params,
+  data          = dtrain,
+  nrounds       = 300,
+  evals     = list(train = dtrain, test = dtest),
+  verbose       = 1,
+  print_every_n = 100
 )
 ```
 
-<<<<<<< HEAD
     ## [1]  train-rmse:35249.099244 test-rmse:35053.173059 
     ## [101]    train-rmse:5481.481446  test-rmse:5565.333543 
     ## [201]    train-rmse:5146.434505  test-rmse:5252.096221 
@@ -1052,28 +883,9 @@ xgb.plot.importance(xgb_importance, top_n = 10,
 Location is the most important predictor by a wide margin, followed by
 experience_years and company_size. Industry and remote_work contribute
 the least, consistent with our earlier findings.
-=======
-XGBoost outperformed Linear Regression and produced more accurate salary predictions by modeling non-linear relationships and interactions between variables.
 
----
+### Model Comparison
 
-# Key Findings
-
-- Experience is one of the strongest salary predictors
-- Location creates major salary differences
-- AI and Machine Learning positions earn the highest salaries
-- Industry has minimal influence on salary
-- Enterprise companies generally pay higher salaries
-- XGBoost outperformed Linear Regression
-
----
-
-# Conclusion
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
-
-This project successfully demonstrated how machine learning models can predict salaries using real-world global technology job data.
-
-<<<<<<< HEAD
 ``` r
 # Compare RMSE and MAE across both models
 results <- data.frame(
@@ -1094,48 +906,38 @@ predicts salary roughly \$1,300 more accurately on average.
 
 ``` r
 # Visualize RMSE and MAE for both models as a side-by-side bar chart
-=======
-The analysis showed that experience, location, company size, and job title are the strongest salary drivers. Industry, however, had minimal impact compared to other predictors.
 
-Among the machine learning models tested, XGBoost achieved the strongest prediction performance and produced more accurate salary estimates than Linear Regression.
+results %>%
+  pivot_longer(cols = c(RMSE, MAE), names_to = "Metric", values_to = "Value") %>%
+  ggplot(aes(x = reorder(Model, Value), y = Value, fill = Metric)) +
+  geom_col(position = "dodge") +
+  coord_flip() +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab(NULL) + ylab("Error (USD)") +
+  ggtitle("Model Comparison: RMSE and MAE (lower is better)")
+```
 
-The project also demonstrated the importance of data preprocessing, visualization, and machine learning techniques in solving real-world prediction problems.
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
-
----
-
-<<<<<<< HEAD
 ![](README_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
 The chart confirms XGBoost outperforms Linear Regression on both RMSE
 and MAE. Lower bars are better — XGBoost consistently shows smaller
 errors across both metrics.
-=======
-# Future Improvements
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
 
-Future improvements for this project include:
+### Residual Analysis
 
-<<<<<<< HEAD
 To evaluate whether the best model makes systematic errors, we examined
 the distribution of residuals — the differences between actual and
 predicted salaries.
 
 ``` r
 # The distribution of residuals — the differences between actual and predicted salaries...
-=======
-- Adding additional salary-related variables
-- Including equity and bonus compensation
-- Testing deep learning models
-- Building a web application for salary prediction
-- Exploring interaction effects between variables
 
----
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
+residuals_df <- data.frame(
+  actual    = test_data$salary,
+  predicted = xgb_preds,
+  residual  = test_data$salary - xgb_preds
+)
 
-# Technologies Used
-
-<<<<<<< HEAD
 ggplot(residuals_df, aes(x = predicted, y = actual)) +
   geom_point(alpha = 0.05, color = "#2b6cb0", size = 0.7) +
   geom_abline(slope = 1, intercept = 0, color = "#c84b11", linewidth = 1) +
@@ -1315,14 +1117,3 @@ titles or concentrated in certain roles. Incorporating additional
 variables such as programming language, years at current company, and
 total compensation (including equity) would also improve the model’s
 practical utility.
-=======
-- R
-- tidyverse
-- ggplot2
-- caret
-- xgboost
-- Metrics
-- Machine Learning
-- Data Visualization
-- R Markdown
->>>>>>> 4fa7f8199226caca4023112b51449e87eef8abac
