@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Global Tech Salary Prediction and Analysis
 ================
 
@@ -13,9 +14,24 @@ and reveal which qualifications translate most directly into higher pay.
 Ultimately, our goal is to understand the circumstances under which tech
 professionals earn more — and to build a predictive model that can
 estimate salary given a set of job attributes.
+=======
+---
+title: "Global Tech Salary Prediction and Analysis"
+output: github_document
+---
+>>>>>>> 3f169e319021049476b92f426c0db550050bb44e
 
 In pursuit of the stated goal, we will explore the following questions:
 
+<<<<<<< HEAD
+=======
+### Shiva Manish Reddy, Sravya Bhavanam, Kavya Bhavanam, Chaitanya Arravelli  
+### DS202 Final Project
+
+
+## Introduction
+
+>>>>>>> 3f169e319021049476b92f426c0db550050bb44e
 1.  Which job titles command the highest salaries? Are AI and machine
     learning roles outpacing traditional software engineering positions?
 
